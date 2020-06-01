@@ -1,0 +1,82 @@
+baseURL = "https://tomhoule.com/"
+languageCode = "en-us"
+title = "a blank page"
+theme = "cupper-hugo-theme"
+
+[permalinks]
+post = "/:filename/"
+
+[params]
+description = "Let's see if we can blog"
+homeMetaContent = "An accessibility-friendly Hugo theme, ported from the original Cupper project."
+footer = "Made with [Hugo](https://gohugo.io/). Themed by [Cupper](https://github.com/zwbetz-gh/cupper-hugo-theme)."
+dateFormat = "2006-01-02"
+katex = true
+
+[imaging]
+quality = 99
+
+[[menu.nav]]
+name = "Home"
+url = "/"
+weight = 1
+
+[[menu.nav]]
+name = "Blog"
+url = "/post/"
+weight = 2
+
+[[menu.nav]]
+name = "Tags"
+url = "/tags/"
+weight = 3
+
+[[menu.nav]]
+name = "Talks"
+url = "/talks/"
+weight = 4
+
+[[menu.nav]]
+name = "About"
+url = "/about"
+weight = 5
+
+[[menu.nav]]
+name = "RSS"
+url = "/index.xml"
+weight = 6
+
+[markup]
+defaultMarkdownHandler = "goldmark"
+
+[markup.goldmark.extensions]
+definitionList = true
+footnote = true
+linkify = true
+strikethrough = true
+table = true
+taskList = true
+typographer = true
+
+[markup.goldmark.parser]
+attribute = true
+autoHeadingID = true
+
+[markup.goldmark.renderer]
+hardWraps = false
+unsafe = true
+xHTML = false
+
+[markup.highlight]
+codeFences = false
+hl_Lines = ""
+lineNoStart = 1
+lineNos = false
+lineNumbersInTable = true
+noClasses = true
+style = "monokai"
+tabWidth = 4
+
+[markup.tableOfContents]
+endLevel = 6
+startLevel = 2
