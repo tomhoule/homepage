@@ -30,9 +30,7 @@ new to me.
 The first chapter is titled _Basic properties of numbers_. Its purpose is to
 reformulate and condense facts that the reader supposedly already knows.
 
-Twelve properties are treated:
-
-Four properties of addition:
+Twelve properties are treated. Four properties of addition:
 
 1. Associativity: $$ a + (b + c) = (a + b) + c $$
 2. Zero as the identity element: $$ a + 0 = 0 + a = a $$
@@ -122,3 +120,20 @@ prove it without, but it seemed like even mathlib uses `classical` (see
 For the [next proof](TODO), I needed a proof of `0 ≠ 2`, which I got to from
 `0 < 2`, which required changing the instance of `field α` to
 `linear_ordered_field α`. That seems reasonable.
+
+Writing down the proof also made it clearer that the part that needs
+distributivity is `a + a = 2 * a`:
+
+```lean
+def add_self_is_mul_two : a + a = 2 * a :=
+calc
+    a + a   = (a * 1) + a : by rw mul_one'
+        ... = (a * 1) + (a * 1) : by rw mul_one'
+        ... = a * (1 + 1) : by rw [←mul_distrib']
+        ... = a *  2 : by refl
+        ... = 2 * a : by rw mul_comm'
+```
+
+...
+
+Recap: `-a` can also be called an additive inverse. Interesting.
