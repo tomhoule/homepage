@@ -134,6 +134,20 @@ calc
         ... = 2 * a : by rw mul_comm'
 ```
 
-...
+`-a` can also be called an additive inverse. Interesting.
 
-Recap: `-a` can also be called an additive inverse. Interesting.
+..._ellipsis_...
+
+---
+
+### 2 weeks later
+
+I continued going through the chapter step by step, and now starting the
+problems.
+
+- Some patterns like "divide both sides of the equation bu the same amount" do
+  not translate well to lean. I had to learn to "summon" values, adding zero,
+  then opposite, or multiplying by one, then inverse.
+- Represent sequences with inductively defined functions (gizmo).
+- A lot of function names to memorize
+- TODO: issue on computable real numbers
