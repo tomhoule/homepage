@@ -151,3 +151,6 @@ problems.
 - Represent sequences with inductively defined functions (gizmo).
 - A lot of function names to memorize
 - TODO: issue on computable real numbers
+- I somehow find things easier to grasp through induction rules:
+    - choose k n = choose k-1 n-1 + choose k n-1
+    - n! = n * (n-1)!
