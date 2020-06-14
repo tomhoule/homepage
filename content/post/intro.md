@@ -154,3 +154,5 @@ problems.
 - I somehow find things easier to grasp through induction rules:
     - choose k n = choose k-1 n-1 + choose k n-1
     - n! = n * (n-1)!
+- I had to figure out big operators and how to use finsets (present the 2-3
+  functions needed for `next_gizmo`)
