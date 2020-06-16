@@ -156,3 +156,6 @@ problems.
     - n! = n * (n-1)!
 - I had to figure out big operators and how to use finsets (present the 2-3
   functions needed for `next_gizmo`)
+- For problem 3 (or 4? the one with inequalities), I had to figure out casts and
+  `rwa`, `simpa`. Do the computable parts with integers, then cast to reals to work
+  with square roots.
