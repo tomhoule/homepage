@@ -159,3 +159,5 @@ problems.
 - For problem 3 (or 4? the one with inequalities), I had to figure out casts and
   `rwa`, `simpa`. Do the computable parts with integers, then cast to reals to work
   with square roots.
+- library_search, squeeze_simp
+- #lint
