@@ -1,4 +1,4 @@
-baseURL = "https://tomhoule.com/"
+baseURL = "https://www.tomhoule.com/"
 languageCode = "en-us"
 title = "Tom Houle's blog"
 theme = "cupper-hugo-theme"
