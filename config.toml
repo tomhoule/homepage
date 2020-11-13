@@ -1,6 +1,6 @@
 baseURL = "https://tomhoule.com/"
 languageCode = "en-us"
-title = "a blank page"
+title = "Tom Houle's blog"
 theme = "cupper-hugo-theme"
 
 [permalinks]
@@ -8,7 +8,7 @@ post = "/:filename/"
 
 [params]
 description = "Let's see if we can blog"
-homeMetaContent = "An accessibility-friendly Hugo theme, ported from the original Cupper project."
+homeMetaContent = "."
 footer = "Made with [Hugo](https://gohugo.io/). Themed by [Cupper](https://github.com/zwbetz-gh/cupper-hugo-theme)."
 dateFormat = "2006-01-02"
 katex = true

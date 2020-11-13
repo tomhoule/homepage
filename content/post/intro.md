@@ -1,5 +1,5 @@
 +++
-title = "Spivak's Calculus — basic properties of numbers (1/??)"
+title = "Spivak's Calculus — basic properties of numbers (1/?)"
 date = "2020-05-31"
 description = "Spivak's Calculus, basic properties of numbers"
 slug = "spivak-calculus-basic-properties-of-numbers"
@@ -54,8 +54,8 @@ Division is then defined in terms of multiplication. The part of property 7
 about _a_ ≠ 0 explains why division by zero doesn't work (it has no meaningful
 inverse).
 
-At this point, I feel an itch to generalize this beyond integers (we're going to
-need at least real numbers, I figure). I start browsing Wikipedia:
+At this point, I feel an itch to generalize this beyond integers. We're going to
+need at least real numbers, I figure. I start browsing Wikipedia:
 [groups](https://en.wikipedia.org/wiki/Group_(mathematics)) aren't what we want
 (numbers under addition are a group, but not multiplication because it lacks
 invertibility). Next stop is
@@ -125,12 +125,12 @@ Writing down the proof also made it clearer that the part that needs
 distributivity is `a + a = 2 * a`:
 
 ```lean
-def add_self_is_mul_two : a + a = 2 * a :=
+def add_self_eq_two_mul : a + a = 2 * a :=
 calc
     a + a   = (a * 1) + a : by rw mul_one'
         ... = (a * 1) + (a * 1) : by rw mul_one'
         ... = a * (1 + 1) : by rw [←mul_distrib']
-        ... = a *  2 : by refl
+        ... = a * 2 : by refl
         ... = 2 * a : by rw mul_comm'
 ```
 
@@ -145,19 +145,24 @@ calc
 I continued going through the chapter step by step, and now starting the
 problems.
 
-- Some patterns like "divide both sides of the equation bu the same amount" do
-  not translate well to lean. I had to learn to "summon" values, adding zero,
+- Some patterns like "divide both sides of the equation by the same amount" do
+  not translate easily to Lean. I had to learn to "summon" values, adding zero,
   then opposite, or multiplying by one, then inverse.
 - Represent sequences with inductively defined functions (gizmo).
 - A lot of function names to memorize
-- TODO: issue on computable real numbers
 - I somehow find things easier to grasp through induction rules:
-    - choose k n = choose k-1 n-1 + choose k n-1
-    - n! = n * (n-1)!
+    - `choose k n = choose k-1 n-1 + choose k n-1`
+    - `n! = n * (n-1)!`
 - I had to figure out big operators and how to use finsets (present the 2-3
   functions needed for `next_gizmo`)
 - For problem 3 (or 4? the one with inequalities), I had to figure out casts and
-  `rwa`, `simpa`. Do the computable parts with integers, then cast to reals to work
-  with square roots.
+  `rwa`, `simpa`. Do the computable parts with integers, then cast to reals to
+  work with square roots. Computations with real numbers were a pain at first,
+  since they are not computable: you need to cast to something computable, like
+  rational numbers, to make any progress. *This was all solved when I learned
+  about the `norm_num` tactic*.
 - library_search, squeeze_simp
-- #lint
+- `#lint` — it's quaint.
+
+I'll stop here now, and focus on solving the problems without worrying about
+whether this will make a good blog post.
