@@ -1,5 +1,5 @@
 +++
-title = "talks"
+title = "Talks"
 +++
 
 Personal talks, excluding those made in a job context.
