@@ -3,7 +3,7 @@ title = "Spivak's Calculus — basic properties of numbers"
 date = "2020-05-31"
 description = "Spivak's Calculus, basic properties of numbers"
 slug = "spivak-calculus-basic-properties-of-numbers"
-tags = ["maths", "spivak-calculus"]
+tags = ["maths", "spivak-calculus", "lean"]
 draft = false
 +++
 
