@@ -1,5 +1,5 @@
 +++
-title = "Spivak's Calculus — basic properties of numbers (1/?)"
+title = "Spivak's Calculus — basic properties of numbers"
 date = "2020-05-31"
 description = "Spivak's Calculus, basic properties of numbers"
 slug = "spivak-calculus-basic-properties-of-numbers"

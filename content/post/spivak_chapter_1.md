@@ -1,5 +1,5 @@
 +++
-title = "Leaning into Spivak's Calculus (2/?)"
+title = "Leaning into Spivak's Calculus"
 date = "2020-11-13"
 description = "Learnings and impressions from solving the problems of Spivak's Calculus chapter 1, basic properties of numbers in Lean"
 slug = "spivak-calculus-basic-properties-of-numbers-retrospective"
