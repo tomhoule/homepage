@@ -67,24 +67,26 @@ fields](https://en.wikipedia.org/wiki/Field_(mathematics)). This is apparently
 what we want, and mathlib [apparently supports
 them](https://leanprover-community.github.io/mathlib-overview.html).
 
-I hope this attitude of digging just as deep as I need in order to make progress
-is going to work out.
+I hope this attitude of digging just as deep as I need to in order to make
+progress is going to work out.
 
 After a little while digging into how to import mathlib (combination of using
 the right lean version in `leanpkg.toml`, learning the existence of `import`
-statements, and the right `leanpkg` invocations), I realize working with fields
-won't let you use convenient numeric notations. I try real numbers —
-appropriately located at `data.real.basic` in mathlib — only to realize that
-reflexivity doesn't work for things as simple as `5 - 3 = 2`. Looking at the
-source for the `data.real.basic` module, it seems like many definitions are
-non-computable. It makes sense, because real numbers aren't the floats we know
-and love, π isn't some approximation but really π, and we can't compute that. I
-don't know whether Lean can "specialize" computable instances automatically, and
-detect that even though `5` and `3` are real numbers in this context, `5 - 3` is
-computable. I'd have to know more about representations of reals to know if it's
-a temporary limitation in mathlib or something deeper. So I go with rational
-numbers for the examples involving reflexivity. `α` is a field, rational numbers
-are a field, so it works out nicely.
+statements, and the right `leanpkg` invocations), _Note added later: use
+`leanproject` instead if you want to avoid mathlib compilation, it is very
+time-consuming_. I realize working with fields won't let you use convenient
+numeric notations. I try real numbers — appropriately located at
+`data.real.basic` in mathlib — only to realize that reflexivity doesn't work for
+things as simple as `5 - 3 = 2`. Looking at the source for the `data.real.basic`
+module, it seems like many definitions are non-computable. It makes sense,
+because real numbers aren't the floats we know and love, π isn't some
+approximation but really π, and we can't compute that. I don't know whether Lean
+can "specialize" computable instances automatically, and detect that even though
+`5` and `3` are real numbers in this context, `5 - 3` is computable. I'd have to
+know more about representations of reals to know if it's a temporary limitation
+in mathlib or something deeper. So I go with rational numbers for the examples
+involving reflexivity. `α` is a field, rational numbers are a field, so it works
+out nicely.
 
 The consequences of the properties of multiplication give rise to two nice
 examples we can prove in Lean:
