@@ -102,9 +102,9 @@ progress is going to work out.
 
 After a little while digging into how to import mathlib (combination of using
 the right lean version in `leanpkg.toml`, learning the existence of `import`
-statements, and the right `leanpkg` invocations), _Note added later: use
+statements, and the right `leanpkg` invocations — _Note added later: use
 `leanproject` instead if you want to avoid compiling mathlib, it is very
-time-consuming_. I realize working with fields won't let you use convenient
+time-consuming_), I realize working with fields won't let you use convenient
 numeric notations. I try real numbers — appropriately located at
 `data.real.basic` in mathlib — only to realize that reflexivity doesn't work for
 things as simple as `5 - 3 = 2`. Looking at the source for the `data.real.basic`
@@ -266,7 +266,7 @@ One of the tougher examples came up towards the beginning, in part (v) of proble
 
 This required figuring things out about `choose` that belong in chapter 2, how
 to express sums with a variable number of terms — the `algebra.big_operators`
-module in mathlib —, and also how to use a recursive dependent function type to
+module in mathlib —, and also how to use a recursive dependently typed function to
 express the middle terms.
 
 Another example of this were problems of the form _"Find all numbers x for
@@ -301,4 +301,5 @@ pen-and-paper proofs can go through the problems much faster, and use patterns
 that would not work in a theorem prover, like visual proofs. But for me, this is
 the right workflow.
 
-I will continue using Lean to learn more mathematics, it is really a joy.
+I will continue using Lean to learn more mathematics, it is really a joy. Now on
+to chapter 2.
