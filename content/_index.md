@@ -8,3 +8,5 @@ with savoury custard and pieces of cheese, meat, seafood or vegetables. The
 best-known variant is quiche Lorraine, which includes lardons or bacon. Quiche
 can be served hot or cold. It is popular
 worldwide._[¹](https://en.wikipedia.org/wiki/Quiche)
+
+Now you know. You were probably looking for the [blog](/post).
