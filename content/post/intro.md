@@ -234,7 +234,7 @@ following proof
 
 ```lean
 -- For any list of lists of sums, show that the sum of the list_sum's is equal
--- to the list_sum of the concatenated lists. This shows the precedent of
+-- to the list_sum of the concatenated lists. This shows the order of
 -- additions does not matter.
 def part_c : ∀ (sums : list (list ℝ)), list_sum (list.join sums) = sums.foldl running_list_sum 0
 | [] := rfl
