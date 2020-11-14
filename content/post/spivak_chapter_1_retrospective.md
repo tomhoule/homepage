@@ -62,9 +62,10 @@ One of the tougher examples came up towards the beginning, in part (v) of proble
 > (v) $$ x^{n} - y^{n} = (x - y) (x^{n-1} + x^{n-2}y + ... + xy^{n-2} +
 > y^{n-1})$$
 
-This required figuring things out about `choose` that belong in chapter 2, and
-also how to use a recursive dependent function type to express the middle
-terms.
+This required figuring things out about `choose` that belong in chapter 2, how
+to express sums with a variable number of terms — the `algebra.big_operators`
+module in mathlib —, and also how to use a recursive dependent function type to
+express the middle terms.
 
 Another example of this were problems of the form _"Find all numbers x for
 which"_, like problem 11. I did not realize at first that what was really meant,
