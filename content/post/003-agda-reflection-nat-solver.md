@@ -130,6 +130,7 @@ steps, all by transitivity:
 with `a`, `b`, `c` and `d`. (by the same theorem)
 - Which is equal to `b + (a + d) + c` (by reflexivity)
 
+Now let's make this precise.
 
 ### The representations we will use in the tactic code
 
@@ -143,11 +144,6 @@ equal. Care will be required in the choice of data structure there, to ensure
 that (1) it is actually a normal form, and (2) it can be produced from a raw
 expression efficiently. The Grégoire and Mahboubi paper's important contribution
 is to propose a good, fast representation for rings in general.
-
-
-### Conclusion
-
-
 
 ## References
 
