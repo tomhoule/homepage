@@ -9,21 +9,28 @@
   outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = nixpkgs.legacyPackages."${system}";
+        pkgs = import nixpkgs { inherit system; };
         src = ./.;
-        hugo = pkgs.hugo;
-        coreutils = pkgs.coreutils;
-      in {
+        inherit (pkgs) hugo coreutils;
+        cupper = pkgs.fetchgit {
+          url = "https://github.com/tomhoule/cupper-hugo-theme";
+          sha256 = "sha256-Z3/tJCiiZLGuVtuch2UeBuXDyNM4g0EH0euoHrnrfZw=";
+        };
+      in
+      {
         defaultPackage = derivation {
-            name = "tomhoule.com";
-            builder = "${pkgs.bash}/bin/bash";
-            args = [ ./builder.sh ];
-            system = system;
+          name = "tomhoule.com";
+          builder = "${pkgs.bash}/bin/bash";
+          args = [ ./builder.sh ];
 
-            inherit hugo src coreutils;
+          inherit hugo src coreutils system cupper;
         };
         devShell = pkgs.mkShell {
           buildInputs = [ hugo ];
+          shellHook = ''
+            echo 'Installing cupper...'
+            cp -r ${cupper} themes/cupper-hugo-theme;
+          '';
         };
       });
 }
