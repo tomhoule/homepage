@@ -13,7 +13,7 @@ Historically, there have been a number of approaches to the problem of building
 Rust projects with Nix[^1]. The most common one these days is
 [buildRustPackage](https://github.com/NixOS/nixpkgs/blob/933f117a78af47116a64f3faa71c2264f602c8d7/doc/languages-frameworks/rust.section.md).
 It integrates reasonably well with cargo and supports cross-compilation out of
-the box, but if you want to buidl a project targetting
+the box, but if you want to build a project targetting
 `wasm32-unknown-unknown`, you will not find much help online.
 
 Since I recently had to figure that out for
@@ -54,11 +54,11 @@ pub fn gcd(a: i64, b: i64) -> u64 {
 
 `cargo test` confirms that this works.
 
-Next we write a basic flake, with `buildRustPackage`:
+Next, we write a basic flake, with `buildRustPackage`:
 
 ```
 {
-  description = "Minimal rust wasm32-unknwon-unknown example";
+  description = "Minimal rust wasm32-unknown-unknown example";
 
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
@@ -291,7 +291,7 @@ The whole working repository for this post is available at
 
 This is not straightforward as it should be. The whole process works could be
 further streamlined and automated. On the other hand, I take this as a credit
-to Nix that something like this is possible, supported and relatively clean.
+to Nix that something like this is possible, supported, and relatively clean.
 
 
 [^1]: See the "Building Rust packages section" on the [NixOS wiki](https://nixos.wiki/wiki/Rust).
