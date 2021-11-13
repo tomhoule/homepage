@@ -3,18 +3,18 @@
 declare -xp
 set +euxo pipefail
 
-BUILDDIR=$TMPDIR/src
+mkdir -p $TMPDIR/themes $TMPDIR/cache
 
 # Unfortunately, hugo can't build without mutating the build directory.
 # see https://discourse.gohugo.io/t/error-failed-to-create-file-caches-from-configuration/16964/5
-cp -r $src $BUILDDIR
-chmod +rw -R $BUILDDIR 
-mkdir -p $BUILDDIR/themes
-ln -sf $cupper $BUILDDIR/themes/cupper-hugo-theme
+cp -r --no-preserve=ownership,mode $src $TMPDIR/src
+
+ln -sf $cupper $TMPDIR/themes/cupper-hugo-theme
 
 hugo \
-    --ignoreCache \
-    --source $BUILDDIR \
-    --forceSyncStatic \
+    --ignoreCache=true \
+    --cacheDir=$TMPDIR/cache \
+    --themesDir=$TMPDIR/themes \
+    --source $TMPDIR/src \
     --destination $out \
     --verbose
