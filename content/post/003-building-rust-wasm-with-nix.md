@@ -173,7 +173,7 @@ we have a clear picture of what we need:
   ```
   let
       overlays = [ rust-overlay.overlay ];
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = import nixpkgs { inherit overlays system; };
   in
   ```
 
