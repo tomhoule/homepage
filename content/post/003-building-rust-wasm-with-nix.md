@@ -289,9 +289,9 @@ script](https://github.com/prisma/prisma-fmt-wasm/blob/d450e30635a01b113dc444305
 The whole working repository for this post is available at
 [https://github.com/tomhoule/rust-nix-wasm32-unknown-unknown-example](https://github.com/tomhoule/rust-nix-wasm32-unknown-unknown-example).
 
-This is not straightforward as it should be. The whole process works could be
-further streamlined and automated. On the other hand, I take this as a credit
-to Nix that something like this is possible, supported, and relatively clean.
+This is not straightforward as it should be. The whole process could be further
+streamlined and automated. On the other hand, I take this as a credit to Nix
+that something like this is possible, supported, and relatively clean.
 
 
 [^1]: See the "Building Rust packages section" on the [NixOS wiki](https://nixos.wiki/wiki/Rust).
