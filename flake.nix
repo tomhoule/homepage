@@ -13,7 +13,7 @@
         inherit (pkgs) hugo stdenv;
         cupper = pkgs.fetchgit {
           url = "https://github.com/tomhoule/cupper-hugo-theme";
-          sha256 = "sha256-Z3/tJCiiZLGuVtuch2UeBuXDyNM4g0EH0euoHrnrfZw=";
+          sha256 = "sha256-bBZHr5IJt1VRr9Z2ZrTUM4JGgJunsWL7rVxmUAGsZMQ=";
         };
       in
       {
