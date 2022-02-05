@@ -1,6 +1,12 @@
 +++
 +++
 
+<div style="width: 100%; margin: 0 auto; text-align: right; padding-right: 2em;">
+engineer at <a href="https://www.prisma.io">prisma</a>;
+twitter <a href="https://twitter.com/_tomhoule">@_tomhoule</a>;
+github <a href="https://github.com/tomhoule">@tomhoule</a>
+</div>
+
 <script>
     var canvas = document.createElement("canvas")
     var target = document.querySelector("main")
