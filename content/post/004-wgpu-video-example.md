@@ -8,6 +8,9 @@ description = """
 I made a small thing. It's a minimal example project for rendering wgpu
 graphics to a video file.
 """
+aliases = [
+    "/wgpu-minimal-video-rendering-example/"
+]
 +++
 
 I had free time yesterday,so I continued my efforts to find a better creative

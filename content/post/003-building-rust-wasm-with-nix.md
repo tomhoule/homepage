@@ -7,6 +7,9 @@ draft = false
 description = """
 Building Rust projects targeting wasm32-unknown-unknown with Nix.
 """
+aliases = [
+    "/building-rust-wasm-with-nix-flakes/"
+]
 +++
 
 Historically, there have been a number of approaches to the problem of building

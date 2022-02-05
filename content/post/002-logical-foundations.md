@@ -7,6 +7,9 @@ draft = false
 description = """
 Impressions from spending a few more months doing Calculus exercises in Lean 3, the Logical Foundations book, and thoughts about learning maths with theorem provers.
 """
+aliases = [
+    "/logical-foundations-impressions/"
+]
 +++
 
 I just finished _Logical Foundations_, the first part of the [_Software

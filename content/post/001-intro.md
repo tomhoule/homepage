@@ -7,6 +7,9 @@ Learnings and impressions from solving the problems of the first chapter of Spiv
 slug = "leaning-into-calculus-chapter-1"
 tags = ["maths", "spivak-calculus", "lean"]
 draft = false
+aliases = [
+    "/leaning-into-calculus-chapter-1/"
+]
 +++
 
 This post contains three updates at different points in time on formalizing
