@@ -3,3 +3,4 @@
 /result
 /themes
 .direnv
+.hugo_build.lock
