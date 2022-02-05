@@ -32,19 +32,14 @@ url = "/tags/"
 weight = 3
 
 [[menu.nav]]
-name = "Talks"
-url = "/talks/"
-weight = 4
-
-[[menu.nav]]
 name = "About"
 url = "/about"
-weight = 5
+weight = 4
 
 [[menu.nav]]
 name = "RSS"
 url = "/index.xml"
-weight = 6
+weight = 5
 
 [markup]
 defaultMarkdownHandler = "goldmark"
