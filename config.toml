@@ -11,7 +11,7 @@ description = "Let's see if we can blog"
 homeMetaContent = "."
 footer = "🌹 caute 🌹"
 dateFormat = "2006-01-02"
-katex = true
+katex = false
 
 [imaging]
 quality = 99

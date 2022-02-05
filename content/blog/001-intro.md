@@ -65,10 +65,10 @@ reformulate and condense facts that the reader supposedly already knows.
 
 Twelve properties are treated. Four properties of addition:
 
-1. Associativity: $$ a + (b + c) = (a + b) + c $$
-2. Zero as the identity element: $$ a + 0 = 0 + a = a $$
-3. Addition of opposites: $$ a + (-a) = (-a) + a = 0 $$
-4. Commutativity: $$ a + b = b + a $$
+1. Associativity: _a_ + (_b_ + _c_) = (_a_ + _b_) + _c_
+2. Zero as the identity element: _a_ + 0 = 0 + _a_ = _a_
+3. Addition of opposites: _a_ + (-_a_) = (-_a_) + _a_ = 0
+4. Commutativity: _a_ + _b_ = _b_ + _a_
 
 By now, subtraction is already defined, and two small proofs already carried
 out. I used the standard library's `int` module for the time being, but
@@ -77,11 +77,11 @@ else, after I read a bit more about it.
 
 The next properties are about multiplication:
 
-5. Associativity: $$ a \cdot (b \cdot c) = (a \cdot b) \cdot c $$
-6. One as the identity element: $$ a \cdot 1 = 1 \cdot a = a $$
+5. Associativity: _a_ · (_b_ · _c_) = (_a_ · _b_) · _c_
+6. One as the identity element: _a_ · 1 = 1 · _a_ = _a_
 7. Multiplication of inverses:
-$$ \forall a, a ≠ 0 \to \exists a^{-1}, a \cdot a^{-1} = a^{-1} \cdot a = 1 $$
-8. Commutativity: $$ a \cdot b = b \cdot a $$
+ ∀ _a_, _a_ ≠ 0 → ∃ _a⁻¹_, _a_ · _a⁻¹_ = _a⁻¹_ · _a_ = 1
+8. Commutativity: _a_ · _b_ = _b_ · _a_
 
 Division is then defined in terms of multiplication. The part of property 7
 about _a_ ≠ 0 explains why division by zero doesn't work (it has no meaningful
@@ -150,7 +150,7 @@ prove it without, but it seemed like even mathlib uses `classical` (see
 `mul_eq_zero'` in `group_with_zero.lean`, and `division_ring.to_domain` in
 `field.lean`). Then I noticed the book relies on `a ≠ 0` and added the hypothesis.
 
-9. Distributivity: $$ a \cdot (b + c) = (a \cdot b) + (a \cdot c) $$
+9. Distributivity: _a_ · (_b_ + _c_) = (_a_ · _b_) + (_a_ · _c_)
 
 For the next proof, I needed a proof of `0 ≠ 2`, which I got to from `0 < 2`,
 which required changing the instance of `field α` to `linear_ordered_field α`.
