@@ -4,7 +4,7 @@ title = "Tom Houle's blog"
 theme = "cupper-hugo-theme"
 
 [permalinks]
-blog = "/blog/:year/:slug/"
+blog = "/:year/:slug/"
 
 [params]
 description = "Let's see if we can blog"
