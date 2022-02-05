@@ -9,7 +9,7 @@ blog = "/blog/:year/:slug/"
 [params]
 description = "Let's see if we can blog"
 homeMetaContent = "."
-footer = "Made with [Hugo](https://gohugo.io/). Themed by [Cupper](https://github.com/zwbetz-gh/cupper-hugo-theme)."
+footer = "🌹 caute 🌹"
 dateFormat = "2006-01-02"
 katex = true
 
