@@ -229,7 +229,7 @@ Stating the problem precisely is part of the proof effort.
 Take problem 24 (c):
 
 > Let `s(a_{1},...,a_{k})` be some sum formed from `a_{1},...,a_{k}`. Show that
-> $$s(a_{1},...,a_{k}) = a_{1} + ... + a_{k}$$
+> s(a_1,...,a_k) = a_1 + ... + a_k
 
 The "some sum" part is open to interpretation. It could mean different ordering
 of the terms, or different precedence. I went with precedence, and wrote the
@@ -264,8 +264,7 @@ Helper functions have been omitted. See the source repository for the full proof
 
 One of the tougher examples came up towards the beginning, in part (v) of problem 1:
 
-> (v) $$ x^{n} - y^{n} = (x - y) (x^{n-1} + x^{n-2}y + ... + xy^{n-2} +
-> y^{n-1})$$
+> (v) x^n - y^n = (x - y) (x^{n-1} + x^{n-2}y + … + xy^{n-2} + y^{n-1})
 
 This required figuring things out about `choose` that belong in chapter 2, how
 to express sums with a variable number of terms — the `algebra.big_operators`
