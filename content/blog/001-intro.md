@@ -233,7 +233,7 @@ Take problem 24 (c):
 
 The "some sum" part is open to interpretation. It could mean different ordering
 of the terms, or different precedence. I went with precedence, and wrote the
-following proof
+following proof:
 
 ```lean
 -- For any list of lists of sums, show that the sum of the list_sum's is equal
