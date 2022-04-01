@@ -1,7 +1,6 @@
 baseURL = "https://www.tomhoule.com/"
 languageCode = "en-us"
 title = "Tom Houle's blog"
-theme = "cupper-hugo-theme"
 
 [permalinks]
 blog = "/:year/:slug/"

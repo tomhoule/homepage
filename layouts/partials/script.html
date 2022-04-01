@@ -1,0 +1,7 @@
+{{ $templateDomScripts := resources.Get "js/template-dom-scripts.js" }}
+{{ $domScripts := $templateDomScripts | resources.ExecuteAsTemplate "js/dom-scripts.js" . }}
+<script src="{{ $domScripts.RelPermalink }}"></script>  
+
+{{ range .Site.Params.customJs }}
+  <script src="{{ . | relURL }}"></script>
+{{ end }}

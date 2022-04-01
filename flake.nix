@@ -11,10 +11,6 @@
       let
         pkgs = import nixpkgs { inherit system; };
         inherit (pkgs) hugo stdenv;
-        cupper = pkgs.fetchgit {
-          url = "https://github.com/tomhoule/cupper-hugo-theme";
-          sha256 = "sha256-SfhaPoezSbO4oduaA02iKD9NHzey7keNd+VXNtgNYeA=";
-        };
       in
       {
         defaultPackage = stdenv.mkDerivation {
@@ -28,18 +24,11 @@
           buildPhase = "bash ${./builder.sh}";
           installPhase = "echo 'Install phase: skipped'";
 
-          inherit system cupper;
+          inherit system;
         };
         devShell = pkgs.mkShell {
           inputsFrom = [ self.defaultPackage."${system}" ];
           shellHook = ''
-            linkCupper () {
-              mkdir themes 2> /dev/null
-              echo -n 'Installing cupper...'
-              ln -sfn ${cupper} ./themes/cupper-hugo-theme
-              echo 'ok'
-            }
-
             deploy () {
               export DEPLOY_DIR=`mktemp -d`
 
@@ -61,8 +50,6 @@
                 main
               echo 'Done'
             }
-
-            linkCupper
           '';
         };
       });
