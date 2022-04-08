@@ -1,12 +1,12 @@
 baseURL = "https://www.tomhoule.com/"
 languageCode = "en-us"
-title = "Tom Houle's blog"
+title = "Tom Houle's homepage"
 
 [permalinks]
 blog = "/:year/:slug/"
 
 [params]
-description = "Let's see if we can blog"
+description = "Tom Houle's homepage"
 homeMetaContent = "."
 footer = "🌹 caute 🌹"
 dateFormat = "2006-01-02"
