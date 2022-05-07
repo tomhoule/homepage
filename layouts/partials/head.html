@@ -23,37 +23,12 @@
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="theme-color" content="#ffffff">
 
-  <style>
-    body {
-      visibility: hidden;
-      opacity: 0;
-    }
-  </style>
-
-  <style id="darkTheme">
-    .intro-and-nav,
-    .main-and-footer {
-      filter: invert(100%);
-    }
-
-    * {
-      background-color: inherit
-    }
-
-    img:not([src*=".svg"]),
-    .colors,
-    iframe,
-    .demo-container {
-      filter: invert(100%);
-    }
-  </style>
-
   {{ $templateStyles := resources.Get "css/template-styles.css" }}
   {{ $styles := $templateStyles | resources.ExecuteAsTemplate "css/styles.css" . }}
   <link rel="stylesheet" type="text/css" href="{{ $styles.RelPermalink }}">
 
   {{ range .Site.Params.customCss }}
-    <link rel="stylesheet" href="{{ . | relURL }}">
+    <link rel="stylesheet" type="text/css" href="{{ . | relURL }}">
   {{ end }}
 
   {{ $title := print .Title " | " .Site.Title }}

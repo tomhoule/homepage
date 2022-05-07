@@ -11,6 +11,7 @@ homeMetaContent = "."
 footer = "🌹 caute 🌹"
 dateFormat = "2006-01-02"
 katex = false
+customCss = ["css/custom.css"]
 
 [imaging]
 quality = 99

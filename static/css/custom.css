@@ -1,0 +1,8 @@
+/* Tom's stylesheet */
+
+@media (prefers-color-scheme: dark) {
+    .intro-and-nav,
+    .main-and-footer {
+        background-color: #cfcbc4;
+    }
+}
