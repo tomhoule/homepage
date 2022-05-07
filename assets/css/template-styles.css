@@ -52,8 +52,6 @@ p img {
 figure p img {
     margin: 0;
 }
-:focus:not([tabindex="-1"]),
-[data-expands]:focus svg,
 .patterns a:focus .text,
 [for="themer"] :focus + [aria-hidden] {
     outline: 4px solid #999;
@@ -913,9 +911,6 @@ h1 svg {
     }
     [id^="js-expandable-"] {
         display: block;
-    }
-    [data-expands] svg {
-        display: none;
     }
     main *:not(.with-desc) {
         page-break-inside: avoid;
