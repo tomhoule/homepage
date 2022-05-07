@@ -19,7 +19,7 @@ github <a href="https://github.com/tomhoule">@tomhoule</a>
         var context = canvas.getContext("2d")
         context.beginPath()
 
-        var radius = Math.max(canvas.width / 40, 10)
+        var radius = Math.max(canvas.width / 60, 10)
         var step = 2.4 * radius // distance between centers of two adjacent circles
         var xOffset = step
         var yOffset = step
