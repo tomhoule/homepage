@@ -67,5 +67,4 @@ github <a href="https://github.com/tomhoule">@tomhoule</a>
 
     target.prepend(mkCanvas());
     target.append(mkCanvas());
-
 </script>

@@ -630,53 +630,6 @@ pre[class*=language-] code * {
     content: '\2514\2500\2500\0020';
 }
 
-/* Expandable sections */
-.expandable-section {
-    border-top: 1px solid;
-    border-bottom: 1px solid;
-    padding: 0.75rem 0;
-}
-[id^="js-expandable-"] {
-    margin: 0;
-    padding: 1.5rem 0 0.75rem;
-}
-@media screen {
-    .expandable-section + .expandable-section {
-        margin-top: 0;
-        border-top: 0;
-    }
-}
-[data-expands] {
-    text-align: left;
-    color: #111;
-    border: 0;
-    background: none;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-}
-[data-expands] svg {
-    margin-top: 0;
-    width: 1em;
-    height: 1em;
-}
-[data-expands][aria-expanded="true"] svg .up-strut {
-    display: none;
-}
-[data-expands]:focus {
-    outline: none;
-}
-p:empty {
-    display: none;
-}
-*:not(p) + p:empty + p {
-    margin-top: 2.25rem;
-}
-
 /* WCAG and principles */
 .principles p {
     font-size: 0.85rem;
@@ -842,7 +795,6 @@ h1 svg {
 
 /* Utilities */
 .vh {
-  clip: rect(1px, 1px, 1px, 1px);
   height: 1px;
   overflow: hidden;
   position: absolute;
