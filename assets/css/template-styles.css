@@ -35,7 +35,9 @@ p + p {
 }
 a {
     text-decoration: none;
-    border-bottom: 1px solid;
+}
+p a {
+    text-decoration: underline;
 }
 abbr {
     text-decoration: none;
