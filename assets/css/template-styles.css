@@ -306,13 +306,13 @@ caption {
     overflow-x: hidden;
 }
 .intro-and-nav {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     width: 12rem;
     height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
-    border-right: 2px solid;
+    border-right: 1px solid #ccc;
 }
 .intro-and-nav > div {
     padding: 2.25rem;
