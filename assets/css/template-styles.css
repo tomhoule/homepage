@@ -33,12 +33,6 @@ body,
 p + p {
     margin-top: 0.75rem;
 }
-a {
-    text-decoration: none;
-}
-p a {
-    text-decoration: underline;
-}
 abbr {
     text-decoration: none;
     cursor: help;
@@ -105,6 +99,7 @@ h2,
 h3,
 h4 {
     line-height: 1.125;
+    text-decoration: none;
 }
 h1 {
     font-size: 2rem;
@@ -386,6 +381,7 @@ caption {
     padding: 0 1rem;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
+    text-decoration: none;
 }
 .pattern a:focus {
     outline: none;
@@ -442,6 +438,7 @@ caption {
 }
 .patterns-list a {
     border: 0;
+    text-decoration: none;
 }
 
 /* Tags */
