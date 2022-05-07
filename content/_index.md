@@ -1,14 +1,16 @@
 +++
 +++
 
-<p style="width: 100%; margin: 0 auto; text-align: right; padding-right: 2em;">
-engineer at <a href="https://www.prisma.io">prisma</a>;
-twitter <a href="https://twitter.com/_tomhoule">@_tomhoule</a>;
-github <a href="https://github.com/tomhoule">@tomhoule</a>
+<div id="index-content">
+    <div style="width: 100%; padding: 1.5em 2em 1.5em; margin: auto auto; text-align: right;">
+    engineer at <a href="https://www.prisma.io">prisma</a>;
+    twitter <a href="https://twitter.com/_tomhoule">@_tomhoule</a>;
+    github <a href="https://github.com/tomhoule">@tomhoule</a>
+    </div>
 </div>
 
 <script>
-    var target = document.querySelector("main")
+    var target = document.querySelector("#index-content")
 
     var mkCanvas = function() {
         var canvas = document.createElement("canvas")
