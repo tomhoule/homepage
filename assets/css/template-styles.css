@@ -902,16 +902,6 @@ h1 svg {
     pre code {
         white-space: pre-wrap !important;
     }
-    .expandable-section {
-        border: 0;
-        padding: 0;
-    }
-    .expandable-section + p {
-        margin-top: 0.75rem;
-    }
-    [id^="js-expandable-"] {
-        display: block;
-    }
     main *:not(.with-desc) {
         page-break-inside: avoid;
     }

@@ -8,7 +8,7 @@ blog = "/:year/:slug/"
 [params]
 description = "Tom Houle's homepage"
 homeMetaContent = "Tom Houle's homepage"
-footer = "🌹 caute 🌹"
+footer = "🌹 caute"
 dateFormat = "2006-01-02"
 katex = false
 customCss = ["css/custom.css"]
