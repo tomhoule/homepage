@@ -9,14 +9,13 @@
     box-sizing: border-box;
 }
 html {
-    font-size: calc(1em + 0.12vw);
     font-family: "Noto Sans", "Helvetica Neue", sans-serif;
-    line-height: 1.4;
+    line-height: 1.5;
     color: #111;
     background-color: #fefefe;
 }
 * + * {
-    margin-top: 2.25rem;
+    margin-top: 2rem;
 }
 br,
 dt,
@@ -101,16 +100,15 @@ h4 {
     text-decoration: none;
 }
 h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
 }
 h2 {
-    font-size: 1.66rem;
+    font-size: 1.48rem;
 }
 h3 {
     font-size: 1.25rem;
 }
-h4,
-h5 {
+h4 {
     font-size: 1rem;
 }
 h5 {
@@ -355,9 +353,6 @@ caption {
 }
 .patterns * {
     margin-top: 0;
-}
-.patterns h3 {
-    font-size: 1rem;
 }
 .patterns h3 + ul {
     margin-top: 0.75rem;
@@ -628,13 +623,6 @@ pre[class*=language-] code * {
 .file-tree li:last-child::before {
     content: '\2514\2500\2500\0020';
 }
-
-/* WCAG and principles */
-.principles p {
-    font-size: 0.85rem;
-    margin-top: 0.75rem;
-}
-.principles.with-desc > li + li,
 
 /* Site errors */
 .site-error {
