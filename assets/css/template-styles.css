@@ -619,30 +619,6 @@ h1 svg {
     font-style: normal;
 }
 
-/* Color palettes */
-.colors {
-    display: flex;
-    height: 5rem;
-    margin: -0.25rem;
-    list-style: none;
-    flex-wrap: nowrap;
-}
-.colors li {
-    margin: 0.25rem;
-    flex: 1 0 auto;
-    position: relative;
-}
-.colors span {
-    line-height: 1;
-    background-color: #111;
-    color: #fefefe;
-    font-size: 0.75rem;
-    padding: 0.25rem;
-    position: absolute;
-    bottom: 0.25rem;
-    right: 0.25rem;
-}
-
 /* Cross references */
 .pattern-link {
     font-weight: bold;
