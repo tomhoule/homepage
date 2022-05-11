@@ -237,37 +237,6 @@ th:empty {
     border: 0;
 }
 
-/* Tested using... table */
-.tested {
-    text-align: center;
-    border: 1px solid #111;
-}
-.tested tr {
-    display: flex;
-    flex-flow: row wrap;
-}
-.tested td, .tested th {
-    vertical-align: middle;
-    overflow: hidden;
-    flex: 1 0 auto;
-    border: 1px solid #111;
-}
-.tested th {
-    width: 100%;
-    background-color: #111;
-    color: #fefefe;
-    outline-color: #111;
-}
-.tested img {
-    max-width: 3rem;
-}
-.tested span {
-    display: block;
-    margin: 0;
-}
-.tested .additional {
-    font-size: 0.85rem;
-}
 caption {
     font-size: 1.125rem;
     padding-bottom: 0.25rem;
