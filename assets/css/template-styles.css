@@ -288,7 +288,6 @@ caption {
 }
 .main-and-footer > div {
     max-width: 60rem;
-    margin: 0 auto;
     padding: 2.25rem;
 }
 [role="contentinfo"] {
