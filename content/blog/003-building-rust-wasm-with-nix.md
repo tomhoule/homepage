@@ -20,7 +20,7 @@ the box, but if you want to build a project targetting
 `wasm32-unknown-unknown`, you will not find much help online.
 
 Since I recently had to figure that out for
-[prisma-fmt-wasm](https://github.com/prisma/prisma-fmt-wasm/), this will be a
+[prisma-fmt-wasm](https://github.com/prisma/prisma-engines/tree/main/prisma-fmt-wasm), this will be a
 short post walking through a setup that works. The whole working example used
 in this post is [on
 GitHub](https://github.com/tomhoule/rust-nix-wasm32-unknown-unknown-example).
@@ -285,7 +285,7 @@ And voilà!
 
 As an extra nicety, you'll notice the `checkPhase` doesn't test anything, so it
 can be replaced by something custom like [this shell
-script](https://github.com/prisma/prisma-fmt-wasm/blob/d450e30635a01b113dc444305b11cb672439ce00/check.sh).
+script](https://github.com/prisma/prisma-engines/blob/e88b5dd70fddc391f9344ee8056dfd92f0f6fdef/prisma-fmt-wasm/scripts/check.sh).
 
 ## Epilogue
 
