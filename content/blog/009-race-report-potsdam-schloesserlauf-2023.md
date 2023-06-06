@@ -1,5 +1,5 @@
 +++
-title = "Potsdam Schlösserlauf 2023, first half-marathon"
+title = "Potsdam Schlösserlauf 2023, first half marathon"
 date = "2023-06-05"
 slug = "race-report-potsdam-schloesserlauf-2023"
 tags = ["running"]
@@ -10,7 +10,7 @@ later, but hey, it's writing practice.
 
 # The race
 
-Yesterday, I ran my first [half-marathon in
+Yesterday, I ran my first [half marathon in
 Potsdam](https://www.potsdam-schloesserlauf.de/strecke/). It was a sunny day,
 around 20°C. I have done the distance in long runs before, so I knew I could
 finish if I didn't go out too fast. The A goal was finishing under 2 hours, and
@@ -45,7 +45,7 @@ Very briefly: I had a good training block, before and after the 14km RBB Lauf
 end of April. I managed to increase my weekly mileage to a bit over 50km
 towards the end without injury, despite persistent runner's knee, which got
 more manageable with proper calf warm-ups. Most of the runs were very easy,
-with weekly long runs that went about half-marathon distance — 22km for the
+with weekly long runs that went about half marathon distance — 22km for the
 longest — towards the end. I tried implementing weekly speed workouts
 (threshold runs and intervals), but at least half of them did not end up
 realizing because of knee pain or insufficient recovery. Making sure I can get
@@ -57,8 +57,8 @@ summer.
 
 Now the ugly part. I finished the race towards 11, and shortly after started
 getting headaches. I had made sure to stay on top of water and sugar intake
-with one glass of cola and a half-banana during the race, and right after a
-sports drink, another half-banana and an apple, so I don't think it's likely
+with one glass of cola and a half banana during the race, and right after a
+sports drink, another half banana and an apple, so I don't think it's likely
 that I was dehydrated or too low in sugar. As mentioned, lunch was very heavy,
 with a bunch of fat, and I had a beer with it, so some alcohol on top. We went
 home and I had coffee and some biscuits. The headaches weren't too bad most of
@@ -84,7 +84,7 @@ If you are reading this and it rings a bell, please get in touch :)
 # Parting words
 
 All in all a beautiful day with the family, and a very positive first half
-marathon experience. Next step is a trail half-marathon, the [Sielmanns
+marathon experience. Next step is a trail half marathon, the [Sielmanns
 Heidelauf](https://sportverein-dallgow.de/heidelauf/), in the [Döberitzer Heide
 reserve](https://en.wikipedia.org/wiki/D%C3%B6beritzer_Heide) between Berlin
 and Potsdam. I won't be looking for a specific time on that one, just to enjoy
