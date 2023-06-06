@@ -7,7 +7,6 @@ graphql-client.
 """
 slug = "graphql-client-talk"
 tags = ["graphql", "talk", "rust"]
-draft = false
 +++
 
 The slides for a talk I gave at the Rust Berlin meetup introducing the

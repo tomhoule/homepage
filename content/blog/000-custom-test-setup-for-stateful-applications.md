@@ -6,7 +6,6 @@ Talk given at the Rust Berlin meetup introducing some elements of a new test set
 """
 slug = "custom-test-setup-for-stateful-applications"
 tags = ["testing", "talk", "rust"]
-draft = false
 +++
 
 The slides for a talk I gave at the Rust Berlin meetup introducing the

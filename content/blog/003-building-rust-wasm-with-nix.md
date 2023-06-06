@@ -3,7 +3,6 @@ title = "Building Rust WASM projects with Nix"
 date = "2021-11-13"
 slug = "building-rust-wasm-with-nix-flakes"
 tags = ["rust", "nix", "wasm"]
-draft = false
 description = """
 Building Rust projects targeting wasm32-unknown-unknown with Nix.
 """

@@ -3,7 +3,6 @@ title = "Logical Foundations, Calculus, updates on learning (with) theorem prove
 date = "2021-04-02"
 slug = "logical-foundations-impressions"
 tags = ["maths", "software-foundations", "lean", "coq"]
-draft = false
 description = """
 Impressions from spending a few more months doing Calculus exercises in Lean 3, the Logical Foundations book, and thoughts about learning maths with theorem provers.
 """

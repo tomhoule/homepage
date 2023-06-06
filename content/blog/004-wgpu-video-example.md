@@ -3,7 +3,6 @@ title = "A tiny wgpu app rendering directly to a video file"
 date = "2021-12-11"
 slug = "wgpu-minimal-video-rendering-example"
 tags = ["rust", "wgpu"]
-draft = false
 description = """
 I made a small thing. It's a minimal example project for rendering wgpu
 graphics to a video file.
