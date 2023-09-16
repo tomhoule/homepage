@@ -380,3 +380,7 @@ can be one of them. You can ask questions in natural language about what the
 program was doing, and the answers tend to be pretty good, at least with GPT-4.
 I haven't had one of these cases for myself yet, but I suspect this combination
 can be very useful beyond explaining the output to new users.
+
+# Further readings
+
+Julia Evans' website has quality posts in general, and about strace in particular: https://jvns.ca/categories/strace/.
