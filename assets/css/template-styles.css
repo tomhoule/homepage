@@ -599,18 +599,6 @@ h1 svg {
     font-weight: bold;
 }
 
-/* Inline demos */
-.demo-inner {
-  border-top: 1px solid;
-  border-bottom: 1px solid;
-  padding: 1.5rem 0;
-  position: relative;
-}
-[id^="js-demo-"] {
-    all: initial;
-    display: block;
-}
-
 /* Section links */
 .h2-container {
     position: relative;
