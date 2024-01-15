@@ -22,8 +22,7 @@
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="theme-color" content="#ffffff">
 
-  {{ $templateStyles := resources.Get "css/template-styles.css" }}
-  {{ $styles := $templateStyles | resources.ExecuteAsTemplate "css/styles.css" . }}
+  {{ $styles := resources.Get "css/styles.css" }}
   <link rel="stylesheet" type="text/css" href="{{ $styles.RelPermalink }}">
 
   {{ range .Site.Params.customCss }}

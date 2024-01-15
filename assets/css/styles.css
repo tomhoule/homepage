@@ -11,7 +11,7 @@
 html {
     font-family: "Noto Sans", "Helvetica Neue", sans-serif;
     line-height: 1.5;
-    color: #111;
+    color: #111417;
     background-color: #fefefe;
 }
 * + * {
@@ -420,15 +420,6 @@ caption {
 }
 .note > div >:first-child + * {
     margin-top: 0;
-}
-.note.warning {
-    border-left: 0;
-    background-image: url({{ "css/images/stripe.svg" | absURL }});
-    background-size: 0.5rem auto;
-    background-repeat: repeat-y;
-}
-.note.warning > div {
-    margin-left: 1.25rem;
 }
 
 /* Figures */
