@@ -33,7 +33,7 @@ issued by the process.
 
 [ltrace](https://en.wikipedia.org/wiki/Ltrace) is similar to strace, but instead of tracing system calls, it traces calls to dynamically linked libraries.
 
-{{<note>}} I haven't tried it because _I use NixOS™_, but [`dtruss`](https://www.brendangregg.com/dtrace.html) is supposed to be the MacOS equivalent of `strace`. {{</note>}}
+> ℹ️ I haven't tried it because _I use NixOS™_, but [`dtruss`](https://www.brendangregg.com/dtrace.html) is supposed to be the MacOS equivalent of `strace`.
 
 Let's see `strace` in action. We write and compile the following Rust program:
 

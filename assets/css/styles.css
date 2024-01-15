@@ -403,25 +403,6 @@ caption {
     font-size: 0.85rem;
 }
 
-/* Notes and warnings */
-.note {
-    border-left: 0.5rem solid;
-    font-size: 0.85rem;
-}
-.note .sign {
-    height: 2.25rem;
-    width: 2.25rem;
-}
-.note > div {
-    margin-left: 0.75rem;
-}
-.note > div > img:first-child {
-    height: 1.5rem;
-}
-.note > div >:first-child + * {
-    margin-top: 0;
-}
-
 /* Figures */
 figure {
     text-align: center;
