@@ -18,8 +18,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      # DART_SASS_VERSION: 1.93.2
-      # GO_VERSION: 1.25.3
       HUGO_VERSION: 0.152.2
       TZ: Europe/Berlin
     steps:
@@ -28,15 +26,6 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-      # - name: Setup Go
-      #   uses: actions/setup-go@v5
-      #   with:
-      #     go-version: ${{ env.GO_VERSION }}
-      #     cache: false
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
@@ -50,9 +39,8 @@ jobs:
           tar -C "${HOME}/.local/hugo" -xf "hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
           rm "hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
           echo "${HOME}/.local/hugo" >> "${GITHUB_PATH}"
-      - name: Verify installations
+      - name: Verify installation
         run: |
-          echo "Go: $(go version)"
           echo "Hugo: $(hugo version)"
       - name: Configure Git
         run: |
@@ -81,6 +69,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./public
+
   deploy:
     environment:
       name: github-pages
