@@ -7,7 +7,7 @@ description = """
 Building Rust projects targeting wasm32-unknown-unknown with Nix.
 """
 aliases = [
-    "/building-rust-wasm-with-nix-flakes/"
+    "/2021/building-rust-wasm-with-nix-flakes/"
 ]
 +++
 

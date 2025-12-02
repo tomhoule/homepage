@@ -3,7 +3,7 @@ languageCode = "en-us"
 title = "Tom Houle's homepage"
 
 [permalinks]
-blog = "/:year/:slug/"
+blog = "/:slug/"
 
 [params]
 description = "Tom Houle's homepage"

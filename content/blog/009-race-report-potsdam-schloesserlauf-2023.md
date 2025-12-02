@@ -3,6 +3,7 @@ title = "Potsdam Schlösserlauf 2023, first half marathon"
 date = "2023-06-05"
 slug = "race-report-potsdam-schloesserlauf-2023"
 tags = ["running"]
+aliases = ["/2023/race-report-potsdam-schloesserlauf-2023/"]
 +++
 
 This is a race report, probably most interesting for myself looking back on it

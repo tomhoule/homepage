@@ -4,6 +4,7 @@ date = "2025-12-02"
 slug = "graphql-conf-amsterdam"
 draft = false
 tags = ["graphql", "talks"]
+aliases = ["/2025/graphql-conf-amsterdam/"]
 +++
 
 I had a fantastic time at GraphQL Conf in Amsterdam last September. It’s always nice to connect with the community face-to-face, and I was impressed by the liveliness of the GraphQL community, as a first time GraphQL conf attendee and speaker. I loved the vibe and hearing about the challenges everyone is solving.

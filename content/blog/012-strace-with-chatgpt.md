@@ -3,6 +3,7 @@ title = "strace with ChatGPT"
 date = "2023-09-16"
 slug = "strace-with-chatgpt"
 tags = ["llm", "linux", "programming", "systems-programming"]
+aliases = ["/2023/strace-with-chatgpt/"]
 +++
 
 Since ChatGPT is the trend of the moment, I had to check it out. There is a lot

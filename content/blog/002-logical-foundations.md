@@ -7,7 +7,7 @@ description = """
 Impressions from spending a few more months doing Calculus exercises in Lean 3, the Logical Foundations book, and thoughts about learning maths with theorem provers.
 """
 aliases = [
-    "/logical-foundations-impressions/"
+    "/2021/logical-foundations-impressions/"
 ]
 +++
 
