@@ -4,7 +4,9 @@
 <div id="index-content">
     <div style="width: 100%; padding: 1.5em 2em 1.5em; margin: auto auto; text-align: right;">
     engineer at <a href="https://grafbase.com/">grafbase</a>;
-    github <a href="https://github.com/tomhoule">@tomhoule</a>
+    github <a href="https://github.com/tomhoule">@tomhoule</a>;
+    bluesky <a href="https://bsky.app/profile/tomhoule.com">@tomhoule.com</a>;
+    also see my <a href="https://github.com/tomhoule/cv/blob/main/cv_tom_houle.pdf">résumé</a>
     </div>
 </div>
 
