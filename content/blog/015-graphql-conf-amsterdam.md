@@ -30,4 +30,3 @@ I finished by co-hosting a workshop alongside Benjamin Rabier. Our goal was to d
 We looked at how to use [Composite Schemas](https://github.com/graphql/composite-schemas-spec/), WebAssembly extensions based on the Component Model (WASI preview 2), and the Grafbase Gateway to federate non-GraphQL sources. We live demoed integrating REST APIs, a Postgres database, Kafka, and gRPC services directly into a federated graph without needing to write dedicated GraphQL servers in front of them. You can find the [slides here](/talks/graphql-conf-2025-workshop-slides.pdf).
 
 {{< youtube lFrm-nR-TXs >}}
-
