@@ -13,5 +13,4 @@ hugo \
     --ignoreCache=true \
     --cacheDir=$TMPDIR/cache \
     --source $TMPDIR/src \
-    --destination $out \
-    --verbose
+    --destination $out
