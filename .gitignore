@@ -4,3 +4,5 @@
 /themes
 .direnv
 .hugo_build.lock
+.env
+.pi
