@@ -48,5 +48,9 @@
             echo 'Done'
           '';
         };
+
+        devShells.default = pkgs.mkShell {
+          packages = [pkgs.zig];
+        };
       });
 }
