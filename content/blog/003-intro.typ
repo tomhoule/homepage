@@ -14,7 +14,7 @@ chapter 1 of Michael Spivak's _Calculus_ book and its problems in #link("https:/
 
 You can find the proofs #link("https://github.com/tomhoule/spivak-calculus/")[on GitHub].
 
-#line(length: 100%)
+#html.hr()
 
 == Just starting
 
@@ -172,7 +172,7 @@ calc
 
 ..._ellipsis_...
 
-#line(length: 100%)
+#html.hr()
 
 == Two weeks later
 
@@ -205,7 +205,7 @@ the problems.
 I'll stop here now, and focus on solving the problems without worrying about
 whether this will make a good blog post.
 
-#line(length: 100%)
+#html.hr()
 
 == A few months later
 

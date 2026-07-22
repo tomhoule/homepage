@@ -1,0 +1,125 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body><head><meta name="blog-post" content="{&quot;title&quot;:&quot;Building Rust WASM projects with Nix&quot;,&quot;slug&quot;:&quot;building-rust-wasm-with-nix-flakes&quot;,&quot;date&quot;:&quot;2021-11-13&quot;,&quot;draft&quot;:false,&quot;tags&quot;:[&quot;rust&quot;,&quot;nix&quot;,&quot;wasm&quot;],&quot;aliases&quot;:[&quot;/2021/building-rust-wasm-with-nix-flakes/&quot;]}"></head><p>Historically, there have been a number of approaches to the problem of building Rust projects with Nix<sup id="loc-1" role="doc-noteref"><a href="#loc-4">1</a></sup>. The most common one these days is <a href="https://github.com/NixOS/nixpkgs/blob/933f117a78af47116a64f3faa71c2264f602c8d7/doc/languages-frameworks/rust.section.md">buildRustPackage</a>. It integrates reasonably well with cargo and supports cross-compilation out of the box, but if you want to build a project targeting <code>wasm32-unknown-unknown</code>, you will not find much help online.</p><p>Since I recently had to figure that out for <a href="https://github.com/prisma/prisma-engines/tree/main/prisma-fmt-wasm">prisma-fmt-wasm</a>, this will be a short post walking through a setup that works. The whole working example used in this post is <a href="https://github.com/tomhoule/rust-nix-wasm32-unknown-unknown-example">on GitHub</a>. This post assumes some prior knowledge of Nix<sup id="loc-2" role="doc-noteref"><a href="#loc-5">2</a></sup> and how to build Rust projects for <code>wasm32-unknown-unknown</code><sup id="loc-3" role="doc-noteref"><a href="#loc-6">3</a></sup>.</p><h3>Initial setup</h3><p>Let’s start a regular Rust project with <code>cargo new --lib</code> and write a function we’ll want to expose in <code>src/lib.rs</code>:</p><pre><code data-lang="rust"><span style="color: #74747c">///</span><span style="color: #74747c"> Computes the [greatest common divisor](https://en.wikipedia.org/wiki/Greatest_common_divisor)</span>
+<span style="color: #74747c">///</span><span style="color: #74747c"> of two integers using Euclid's algorithm.</span>
+<span style="color: #74747c">///</span>
+<span style="color: #74747c">///</span><span style="color: #74747c"> ```</span>
+<span style="color: #74747c">///</span><span style="color: #74747c"> # use gcd::*;</span>
+<span style="color: #74747c">///</span><span style="color: #74747c"> assert_eq!(gcd(3, 3), 3);</span>
+<span style="color: #74747c">///</span><span style="color: #74747c"> assert_eq!(gcd(4, 2), 2);</span>
+<span style="color: #74747c">///</span><span style="color: #74747c"> assert_eq!(gcd(20, 15), 5);</span>
+<span style="color: #74747c">///</span><span style="color: #74747c"> assert_eq!(gcd(-20, 15), 5);</span>
+<span style="color: #74747c">///</span><span style="color: #74747c"> assert_eq!(gcd(-20, -15), 5);</span>
+<span style="color: #74747c">///</span><span style="color: #74747c"> assert_eq!(gcd(105, 252), 21);</span>
+<span style="color: #74747c">///</span><span style="color: #74747c"> assert_eq!(gcd(-48, 18), 6);</span>
+<span style="color: #74747c">///</span><span style="color: #74747c"> ```</span>
+<span style="color: #d73948">pub</span> <span style="color: #d73948">fn</span> <span style="color: #4b69c6">gcd</span>(a: <span style="color: #d73948">i64</span>, b: <span style="color: #d73948">i64</span>) -> <span style="color: #d73948">u64</span> {
+    <span style="color: #d73948">if</span> b <span style="color: #d73948">==</span> <span style="color: #b60157">0</span> {
+        a.<span style="color: #4b69c6">unsigned_abs</span>()
+    } <span style="color: #d73948">else</span> {
+        <span style="color: #4b69c6">gcd</span>(b, a <span style="color: #d73948">%</span> b)
+    }
+}</code></pre><p><code>cargo test</code> confirms that this works.</p><p>Next, we write a basic flake, with <code>buildRustPackage</code>:</p><pre><code data-lang="nix">{
+  <span style="color: #8b41b1">description</span> <span style="color: #d73948">=</span> <span style="color: #198810">"</span><span style="color: #198810">Minimal rust wasm32-unknown-unknown example</span><span style="color: #198810">"</span>;
+
+  <span style="color: #8b41b1">inputs</span> <span style="color: #d73948">=</span> {
+    <span style="color: #8b41b1">flake-utils</span>.<span style="color: #8b41b1">url</span> <span style="color: #d73948">=</span> <span style="color: #198810">"</span><span style="color: #198810">github:numtide/flake-utils</span><span style="color: #198810">"</span>;
+    <span style="color: #8b41b1">nixpkgs</span>.<span style="color: #8b41b1">url</span> <span style="color: #d73948">=</span> <span style="color: #198810">"</span><span style="color: #198810">nixpkgs/nixos-unstable</span><span style="color: #198810">"</span>;
+  };
+
+  <span style="color: #8b41b1">outputs</span> <span style="color: #d73948">=</span> { self<span style="color: #d73948">,</span> nixpkgs<span style="color: #d73948">,</span> flake-utils }:
+    flake-utils<span style="color: #d73948">.</span>lib<span style="color: #d73948">.</span>eachDefaultSystem (system:
+      <span style="color: #d73948">let</span> <span style="color: #8b41b1">pkgs</span> <span style="color: #d73948">=</span> <span style="color: #4b69c6">import</span> nixpkgs { <span style="color: #d73948">inherit</span> <span style="color: #8b41b1">system</span>; }; <span style="color: #d73948">in</span>
+      {
+        <span style="color: #8b41b1">defaultPackage</span> <span style="color: #d73948">=</span> pkgs<span style="color: #d73948">.</span>rustPlatform<span style="color: #d73948">.</span>buildRustPackage {
+          <span style="color: #8b41b1">pname</span> <span style="color: #d73948">=</span> <span style="color: #198810">"</span><span style="color: #198810">gcd</span><span style="color: #198810">"</span>;
+          <span style="color: #8b41b1">version</span> <span style="color: #d73948">=</span> <span style="color: #198810">"</span><span style="color: #198810">1.0.0</span><span style="color: #198810">"</span>;
+          <span style="color: #8b41b1">src</span> <span style="color: #d73948">=</span> <span style="color: #198810">./.</span>;
+
+          <span style="color: #8b41b1">cargoLock</span> <span style="color: #d73948">=</span> {
+            <span style="color: #8b41b1">lockFile</span> <span style="color: #d73948">=</span> <span style="color: #198810">./Cargo.lock</span>;
+          };
+        };
+      }
+    );
+}</code></pre><p>Running <code>nix build</code> confirms that this works.</p><h3>Manual wasm build</h3><p>Now we want to build a wasm module from this.</p><p>We’ll go through the steps manually, without writing a nix derivation first, so we have a clear picture of what we need:</p><ul><li><p>We’re going to need wasm-bindgen and the wasm-bindgen cli. The wasm-bindgen versions need to be aligned between the dependency declaration in <code>Cargo.toml</code> and the CLI version we use. We’ll align on the version of wasm-bindgen-cli that is in nixpkgs.</p><p>Let’s create a small development shell in the flake for convenience:</p></li></ul><pre><code data-lang="nix">    devShell = pkgs<span style="color: #d73948">.</span>mkShell {
+      <span style="color: #8b41b1">packages</span> <span style="color: #d73948">=</span> <span style="color: #8b41b1">[</span> pkgs<span style="color: #d73948">.</span>wasm-bindgen-cli <span style="color: #8b41b1">]</span>;
+    };</code></pre><p>And test it:</p><pre><code>  $ nix develop
+  warning: Git tree '/home/tom/src/rust-nix-wasm32-unknown-unknown-example' is dirty
+
+  [tom@xps13:~/src/rust-nix-wasm32-unknown-unknown-example]$ wasm-bindgen --version
+  wasm-bindgen 0.2.78</code></pre><p>Great! Now let’s add that version to <code>Cargo.toml</code>, as well as the <code>crate-type</code> (as shown in the <a href="https://rustwasm.github.io/wasm-bindgen/examples/hello-world.html">wasm-bindgen hello world</a>).</p><pre><code data-lang="toml">  [<span style="color: #4b69c6">package</span>]
+  <span style="color: #4b69c6">name</span> = <span style="color: #198810">"</span><span style="color: #198810">gcd</span><span style="color: #198810">"</span>
+  <span style="color: #4b69c6">version</span> = <span style="color: #198810">"</span><span style="color: #198810">0.1.0</span><span style="color: #198810">"</span>
+  <span style="color: #4b69c6">edition</span> = <span style="color: #198810">"</span><span style="color: #198810">2018</span><span style="color: #198810">"</span>
+
+  [<span style="color: #4b69c6">lib</span>]
+  <span style="color: #4b69c6">crate-type</span> = [<span style="color: #198810">"</span><span style="color: #198810">cdylib</span><span style="color: #198810">"</span>]
+
+  [<span style="color: #4b69c6">dependencies</span>]
+  <span style="color: #4b69c6">wasm-bindgen</span> = <span style="color: #198810">"</span><span style="color: #198810">=0.2.78</span><span style="color: #198810">"</span></code></pre><p>And let’s not forget the annotation in <code>lib.rs</code>:</p><pre><code data-lang="rust">  <span style="color: #d73948">use</span> wasm_bindgen::prelude::<span style="color: #d73948">*</span>;
+
+  <span style="color: #74747c">//</span><span style="color: #74747c"> ...</span>
+
+  <span style="color: #301414">#</span><span style="color: #301414">[</span><span style="color: #301414">wasm_bindgen</span><span style="color: #301414">::</span><span style="color: #301414">wasm_bindgen</span><span style="color: #301414">]</span>
+  <span style="color: #d73948">pub</span> <span style="color: #d73948">fn</span> <span style="color: #4b69c6">gcd</span>(a: <span style="color: #d73948">i64</span>, b: <span style="color: #d73948">i64</span>) -> <span style="color: #d73948">u64</span> {
+      <span style="color: #d73948">if</span> b <span style="color: #d73948">==</span> <span style="color: #b60157">0</span> {
+          a.<span style="color: #4b69c6">unsigned_abs</span>()
+      } <span style="color: #d73948">else</span> {
+          <span style="color: #4b69c6">gcd</span>(b, a <span style="color: #d73948">%</span> b)
+      }
+  }</code></pre><ul><li><p>At this point, if you have a local rust toolchain with the <code>wasm32-unknown-unknown</code> target installed, you should already be able to build the wasm module in the dev shell. But let’s be thorough and have a local toolchain in our project. For this, we’re going to need oxalica’s <a href="https://github.com/oxalica/rust-overlay">rust-overlay</a>.</p><p>We add a flake input:</p></li></ul><pre><code data-lang="nix">  inputs = {
+    <span style="color: #8b41b1">flake-utils</span>.<span style="color: #8b41b1">url</span> <span style="color: #d73948">=</span> <span style="color: #198810">"</span><span style="color: #198810">github:numtide/flake-utils</span><span style="color: #198810">"</span>;
+    <span style="color: #8b41b1">rust-overlay</span> <span style="color: #d73948">=</span> {
+      <span style="color: #8b41b1">url</span> <span style="color: #d73948">=</span> <span style="color: #198810">"</span><span style="color: #198810">github:oxalica/rust-overlay</span><span style="color: #198810">"</span>;
+      <span style="color: #8b41b1">inputs</span>.<span style="color: #8b41b1">nixpkgs</span>.<span style="color: #8b41b1">follows</span> <span style="color: #d73948">=</span> <span style="color: #198810">"</span><span style="color: #198810">nixpkgs</span><span style="color: #198810">"</span>;
+    };
+    <span style="color: #8b41b1">nixpkgs</span>.<span style="color: #8b41b1">url</span> <span style="color: #d73948">=</span> <span style="color: #198810">"</span><span style="color: #198810">nixpkgs/nixos-unstable</span><span style="color: #198810">"</span>;
+  };</code></pre><p>and use the overlay in our local <code>pkgs</code>:</p><pre><code data-lang="nix">  <span style="color: #d73948">let</span>
+      <span style="color: #8b41b1">overlays</span> <span style="color: #d73948">=</span> <span style="color: #8b41b1">[</span> rust-overlay<span style="color: #d73948">.</span>overlay <span style="color: #8b41b1">]</span>;
+      <span style="color: #8b41b1">pkgs</span> <span style="color: #d73948">=</span> <span style="color: #4b69c6">import</span> nixpkgs { <span style="color: #d73948">inherit</span> <span style="color: #8b41b1">overlays</span> <span style="color: #8b41b1">system</span>; };
+  <span style="color: #d73948">in</span></code></pre><p>We then define which rust toolchain we want. There are several ways to do this with rust-overlay, we’ll use a toolchain file (it’s a format defined by rustup, so it’s not nix-specific):</p><pre><code data-lang="nix">  <span style="color: #d73948">let</span>
+      <span style="color: #8b41b1">overlays</span> <span style="color: #d73948">=</span> <span style="color: #8b41b1">[</span> rust-overlay<span style="color: #d73948">.</span>overlay <span style="color: #8b41b1">]</span>;
+      <span style="color: #8b41b1">pkgs</span> <span style="color: #d73948">=</span> <span style="color: #4b69c6">import</span> nixpkgs { <span style="color: #d73948">inherit</span> <span style="color: #8b41b1">system</span> <span style="color: #8b41b1">overlays</span>; };
+      <span style="color: #8b41b1">rust</span> <span style="color: #d73948">=</span> pkgs<span style="color: #d73948">.</span>rust-bin<span style="color: #d73948">.</span>fromRustupToolchainFile <span style="color: #198810">./rust-toolchain.toml</span>;</code></pre><p>and write a <code>rust-toolchain.toml</code>:</p><pre><code data-lang="toml">  [<span style="color: #4b69c6">toolchain</span>]
+  <span style="color: #4b69c6">channel</span> = <span style="color: #198810">"</span><span style="color: #198810">stable</span><span style="color: #198810">"</span>
+  <span style="color: #4b69c6">components</span> = []
+  <span style="color: #4b69c6">targets</span> = [ <span style="color: #198810">"</span><span style="color: #198810">wasm32-unknown-unknown</span><span style="color: #198810">"</span> ]
+  <span style="color: #4b69c6">profile</span> = <span style="color: #198810">"</span><span style="color: #198810">default</span><span style="color: #198810">"</span></code></pre><ul><li>Now let’s add the <code>rust</code> package we just defined to our dev environment and see if we can manually build:</li></ul><pre><code>  $ nix develop
+  warning: Git tree '/home/tom/src/rust-nix-wasm32-unknown-unknown-example' is dirty
+
+  [tom@xps13:~/src/rust-nix-wasm32-unknown-unknown-example]$ cargo build --target=wasm32-unknown-unknown
+      Finished dev [unoptimized + debuginfo] target(s) in 0.06s
+
+  [tom@xps13:~/src/rust-nix-wasm32-unknown-unknown-example]$ ls target/wasm32-unknown-unknown/debug/
+  build  deps  examples  gcd.d  gcd.wasm  incremental  libgcd.d  libgcd.rlib
+
+  [tom@xps13:~/src/rust-nix-wasm32-unknown-unknown-example]$ wasm-bindgen --target=nodejs --out-dir=tmp target/wasm32-unknown-unknown/debug/gcd.wasm
+
+  [tom@xps13:~/src/rust-nix-wasm32-unknown-unknown-example]$ ls tmp/
+  gcd_bg.wasm  gcd_bg.wasm.d.ts  gcd.d.ts  gcd.js
+
+  [tom@xps13:~/src/rust-nix-wasm32-unknown-unknown-example]$ cat tmp/gcd.d.ts
+  /* tslint:disable */
+  /* eslint-disable */
+  /**
+  * Computes the [greatest common divisor](https://en.wikipedia.org/wiki/Greatest_common_divisor)
+  * of two integers using Euclid's algorithm.
+  *
+  * ...
+  * @param {BigInt} a
+  * @param {BigInt} b
+  * @returns {BigInt}
+  */
+  export function gcd(a: BigInt, b: BigInt): BigInt;</code></pre><p>Looks good!</p><h3>Adjust the derivation</h3><p>We now want to translate that into the derivation (the <code>defaultPackage</code>). Here, familiarity with <a href="https://nixos.org/manual/nixpkgs/stable/#chap-stdenv">chapter 6</a> of the nixpkgs manual is helpful. We’re going to override the default phases of the rust build, and basically only keep the phases before <code>buildPhase</code>, because that is where the main point of <code>buildRustPackage</code> happens, namely the vendoring of dependencies.</p><p>This can be discovered again by trial and error from the basic <code>buildRustPackage</code> we had. The bulk of the new code is going to be the <code>buildPhase</code>:</p><pre><code>cargo build --release --target=wasm32-unknown-unknown
+
+echo 'Creating out dir...'
+mkdir -p $out/src;
+
+# Optional, of course
+echo 'Copying package.json...'
+cp ./package.json $out/;
+
+echo 'Generating node module...'
+wasm-bindgen \
+  --target nodejs \
+  --out-dir $out/src \
+  target/wasm32-unknown-unknown/release/gcd.wasm;</code></pre><p>Now <code>nix build</code> gets far into the process, it just fails at the install phase. We can just skip it:</p><pre><code>installPhase = "echo 'Skipping installPhase'";</code></pre><p>And voilà!</p><p>As an extra nicety, you’ll notice the <code>checkPhase</code> doesn’t test anything, so it can be replaced by something custom like <a href="https://github.com/prisma/prisma-engines/blob/e88b5dd70fddc391f9344ee8056dfd92f0f6fdef/prisma-fmt-wasm/scripts/check.sh">this shell script</a>.</p><h3>Epilogue</h3><p>The whole working repository for this post is available at <a href="https://github.com/tomhoule/rust-nix-wasm32-unknown-unknown-example"><a href="https://github.com/tomhoule/rust-nix-wasm32-unknown-unknown-example">https://github.com/tomhoule/rust-nix-wasm32-unknown-unknown-example</a></a>.</p><p>This is not straightforward as it should be. The whole process could be further streamlined and automated. On the other hand, I take this as a credit to Nix that something like this is possible, supported, and relatively clean.</p><section role="doc-endnotes"><ol style="list-style-type: none"><li id="loc-4"><sup role="doc-backlink"><a href="#loc-1">1</a></sup>See the “Building Rust packages section” on the <a href="https://nixos.wiki/wiki/Rust">NixOS wiki</a>.</li><li id="loc-5"><sup role="doc-backlink"><a href="#loc-2">2</a></sup><a href="https://nix.dev/">nix.dev</a> is a helpful resource if you are curious about Nix and want to learn what it’s about.</li><li id="loc-6"><sup role="doc-backlink"><a href="#loc-3">3</a></sup>The <a href="https://rustwasm.github.io/docs/wasm-bindgen/">wasm-bindgen guide</a> is a good resource to learn that.</li></ol></section></body></html>

@@ -20,14 +20,17 @@
   assert(type(aliases) == array, message: "aliases must be an array")
 
   html.head([
-    #html.meta(name: "title", content: title)
-    #html.meta(name: "date", content: date)
-    #html.meta(name: "slug", content: slug)
-    #html.meta(name: "draft", content: if draft { "true" } else { "false" })
-    #html.meta(name: "tags", content: tags.join(", "))
-    #if aliases.len() > 0 {
-      html.meta(name: "aliases", content: aliases.join(", "))
-    },
+    #html.meta(name: "blog-post", content: json.encode(
+      (
+        title: title,
+        slug: slug,
+        date: date,
+        draft: draft,
+        tags: tags,
+        aliases: aliases,
+      ),
+      pretty: false,
+    ))
   ]
   )
 }
