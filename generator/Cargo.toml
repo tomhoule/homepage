@@ -1,0 +1,10 @@
+[package]
+name = "generator"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+hashbrown = { version = "0.17.1", default-features = false }
+html5gum = { version = "0.8.4", default-features = false }
+serde = { version = "1.0.229", default-features = false }
+serde_json = { version = "1", default-features = false, features = ["std"] }
