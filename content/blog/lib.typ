@@ -18,33 +18,34 @@
   assert(type(draft) == bool, message: "draft must be a boolean")
   assert(type(tags) == array, message: "tags must be an array")
   assert(type(aliases) == array, message: "aliases must be an array")
-
-  html.head([
-    #html.meta(name: "blog-post", content: json.encode(
-      (
-        title: title,
-        slug: slug,
-        date: date,
-        draft: draft,
-        tags: tags,
-        aliases: aliases,
-      ),
-      pretty: false,
-    ))
-  ]
-  )
+  
+  html.meta(itemprop: "blog-post-metadata", content: json.encode(
+    (
+      title: title,
+      slug: slug,
+      date: date,
+      draft: draft,
+      tags: tags,
+      aliases: aliases,
+    ),
+    pretty: false,
+  ))
 }
 
 // Responsive 16:9 YouTube embed.
 #let youtube(id) = {
-  html.elem("div", attrs: (style: "position:relative;padding-bottom:56.25%;height:0;overflow:hidden"),
-    html.elem("iframe", attrs: (
+  html.elem("div", attrs: (style: "position:relative;padding-bottom:56.25%;height:0;overflow:hidden"), html.elem(
+    "iframe",
+    attrs: (
       allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen",
       loading: "eager",
       referrerpolicy: "strict-origin-when-cross-origin",
-      src: "https://www.youtube.com/embed/" + id + "?autoplay=0&amp;controls=1&amp;end=0&amp;loop=0&amp;mute=0&amp;start=0",
+      src: "https://www.youtube.com/embed/"
+        + id
+        + "?autoplay=0&amp;controls=1&amp;end=0&amp;loop=0&amp;mute=0&amp;start=0",
       style: "position:absolute;top:0;left:0;width:100%;height:100%;border:0",
       title: "YouTube video",
-    ), [])
-  )
+    ),
+    [],
+  ))
 }
