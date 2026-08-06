@@ -43,9 +43,15 @@ fn generate() -> Result {
         html_file_path.set_extension("html");
 
         extract_metadata(&html_file_path, &mut metadata, &mut html_content)?;
+
+        generate_blog_post_html(&metadata, &html_content)?;
     }
 
     Ok(())
+}
+
+fn generate_blog_post_html(metadata: &MetadataCollection, html_content: &str) -> Result {
+    todo!("we have metadata and content here. render the page with a template.");
 }
 
 fn extract_metadata(
@@ -65,7 +71,6 @@ fn extract_metadata(
     let mut body_end = None;
 
     let mut in_meta = false;
-    let mut in_body = false;
     let mut attribute_name: &[u8] = b"";
     let mut in_blog_post = false;
     let mut meta_content = None;
@@ -73,36 +78,30 @@ fn extract_metadata(
     let result = {
         let emitter = CallbackEmitter::<_, _, usize>::new({
             let body_start = &mut body_start;
-            let mut body_end = &mut body_end;
+            let body_end = &mut body_end;
 
             move |event: CallbackEvent<'_>, span: html5gum::Span<usize>| -> Option<Result> {
                 match event {
                     CallbackEvent::OpenStartTag { name } if name == b"meta" => {
                         in_meta = true;
                     }
-                    CallbackEvent::OpenStartTag { name } if name == b"body" => {
-                        in_body = true;
-                    }
                     CallbackEvent::AttributeName { name } if in_meta => match name {
-                        b"name" => attribute_name = b"name",
+                        b"itemprop" => attribute_name = b"itemprop",
                         b"content" => attribute_name = b"content",
                         _ => (),
                     },
                     CallbackEvent::AttributeValue { value } => match attribute_name {
-                        b"name" if value == b"blog-post" => in_blog_post = true,
+                        b"itemprop" if value == b"blog-post-metadata" => in_blog_post = true,
                         b"content" => meta_content = Some(value.to_owned()),
                         _ => (),
                     },
-                    CallbackEvent::CloseStartTag { self_closing: _ } if in_body => {
-                        in_body = false;
-                        *body_start = Some(span.end);
-                    }
                     CallbackEvent::CloseStartTag { self_closing: _ } if in_meta => {
                         if let Some(content_attr_value) = meta_content.take()
                             && in_blog_post
                         {
                             in_meta = false;
                             in_blog_post = false;
+                            *body_start = Some(span.end);
 
                             let mut deserializer =
                                 serde_json::de::Deserializer::from_slice(&content_attr_value);
