@@ -1,3 +1,4 @@
+use askama::Template;
 use serde::de::DeserializeSeed;
 use std::{backtrace::Backtrace, ffi::OsStr, fmt, fs, io::Read, path::Path, range::Range};
 
@@ -35,14 +36,39 @@ fn generate() -> Result {
 
         extract_metadata(&html_file_path, &mut metadata, &mut html_content)?;
 
-        generate_blog_post_html(&metadata, &html_content)?;
+        generate_blog_post_html(&metadata, &metadata.blog.last().unwrap(), &html_content)?;
     }
 
     Ok(())
 }
 
-fn generate_blog_post_html(metadata: &MetadataCollection, html_content: &str) -> Result {
-    todo!("we have metadata and content here. render the page with a template.");
+fn generate_blog_post_html(
+    metadata: &MetadataCollection,
+    blog_metadata: &BlogMetadata,
+    html_content: &str,
+) -> Result {
+    #[derive(askama::Template)]
+    #[template(path = "post.html")]
+    struct PostTemplate<'a> {
+        title: &'a str,
+        content: &'a str,
+    }
+
+    let mut target = {
+        let mut target_path = std::path::Path::new("public").join(&metadata[blog_metadata.slug]);
+        target_path.set_extension("html");
+
+        std::fs::File::create(target_path).context("Opening HTML blog post target file")?
+    };
+
+    PostTemplate {
+        title: &metadata[blog_metadata.title],
+        content: html_content,
+    }
+    .write_into(&mut target)
+    .context("Rendering blog post template")?;
+
+    Ok(())
 }
 
 fn extract_metadata(
