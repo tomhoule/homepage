@@ -1,14 +1,5 @@
-use hashbrown::HashTable;
 use serde::de::DeserializeSeed;
-use std::{
-    backtrace::Backtrace,
-    ffi::OsStr,
-    fmt, fs,
-    hash::{Hash, Hasher},
-    io::Read,
-    path::Path,
-    range::Range,
-};
+use std::{backtrace::Backtrace, ffi::OsStr, fmt, fs, io::Read, path::Path, range::Range};
 
 const BLOG_DIR_PATH: &str = "./content/blog";
 
@@ -236,7 +227,6 @@ fn compile_typst(file_path: &Path) -> Result {
 struct MetadataCollection {
     blog: Vec<BlogMetadata>,
     strings_buf: String,
-    string_indices: HashTable<StringId>,
 }
 
 impl std::ops::Index<StringId> for MetadataCollection {
@@ -347,38 +337,12 @@ impl<'de> DeserializeSeed<'de> for DeserializeMetadata<'_> {
 
 impl MetadataCollection {
     fn insert_str(&mut self, string: &str) -> StringId {
-        let hash = {
-            let mut hasher = std::hash::DefaultHasher::new();
-            string.hash(&mut hasher);
-            hasher.finish()
-        };
-
-        let strings_buf = &self.strings_buf;
-
-        let hasher = |val: &StringId| {
-            let mut std_hasher = std::hash::DefaultHasher::new();
-            strings_buf[val.0].hash(&mut std_hasher);
-            std_hasher.finish()
-        };
-
-        let entry =
-            match self
-                .string_indices
-                .entry(hash, |key| &strings_buf[key.0] == string, hasher)
-            {
-                hashbrown::hash_table::Entry::Occupied(occupied_entry) => {
-                    return *occupied_entry.get();
-                }
-                hashbrown::hash_table::Entry::Vacant(vacant_entry) => vacant_entry,
-            };
-
         let string_id = {
             let start = self.strings_buf.len();
             StringId((start..start + string.len()).into())
         };
 
         self.strings_buf.push_str(string);
-        entry.insert(string_id);
 
         string_id
     }
