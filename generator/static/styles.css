@@ -1,3 +1,11 @@
+:root {
+    --background: #f3eee4;
+    --foreground: #171512;
+
+    color: var(--foreground);
+    background-color: var(--background);
+}
+
 body {
     margin: 0;
 }
