@@ -1,8 +1,11 @@
 use askama::Template;
 use serde::de::DeserializeSeed;
-use std::{backtrace::Backtrace, ffi::OsStr, fmt, fs, io::Read, path::Path, range::Range};
+use std::{
+    backtrace::Backtrace, cmp::Reverse, ffi::OsStr, fmt, fs, io::Read, path::Path, range::Range,
+};
 
 const BLOG_DIR_PATH: &str = "./content/blog";
+const STYLESHEET: &str = include_str!("../static/styles.css");
 
 fn main() {
     if let Err(err) = generate() {
@@ -21,7 +24,7 @@ fn generate() -> Result {
         let entry = entry.map_err(ErrorReport::context("Reading blog entry"))?;
         let file_path = entry.path();
 
-        if file_path.extension().as_deref() != Some(OsStr::new("typ")) {
+        if file_path.extension() != Some(OsStr::new("typ")) {
             continue;
         }
 
@@ -36,8 +39,50 @@ fn generate() -> Result {
 
         extract_metadata(&html_file_path, &mut metadata, &mut html_content)?;
 
-        generate_blog_post_html(&metadata, &metadata.blog.last().unwrap(), &html_content)?;
+        generate_blog_post_html(&metadata, metadata.blog.last().unwrap(), &html_content)?;
     }
+
+    generate_index_html(&metadata)?;
+    fs::write("public/styles.css", STYLESHEET).context("Writing stylesheet")?;
+
+    Ok(())
+}
+
+fn generate_index_html(metadata: &MetadataCollection) -> Result {
+    #[derive(askama::Template)]
+    #[template(path = "index.html")]
+    struct IndexTemplate<'a> {
+        posts: Vec<IndexPost<'a>>,
+    }
+
+    struct IndexPost<'a> {
+        title: &'a str,
+        date: Date,
+        slug: &'a str,
+    }
+
+    let mut blog_posts = metadata
+        .blog
+        .iter()
+        .filter(|post| !post.draft)
+        .collect::<Vec<_>>();
+    blog_posts.sort_unstable_by_key(|post| Reverse(post.date));
+
+    let posts = blog_posts
+        .into_iter()
+        .map(|post| IndexPost {
+            title: &metadata[post.title],
+            date: post.date,
+            slug: &metadata[post.slug],
+        })
+        .collect();
+
+    let mut target =
+        std::fs::File::create("public/index.html").context("Opening index target file")?;
+
+    IndexTemplate { posts }
+        .write_into(&mut target)
+        .context("Rendering index template")?;
 
     Ok(())
 }
@@ -384,10 +429,21 @@ struct BlogMetadata {
     draft: bool,
 }
 
+#[derive(Clone, Copy, Eq, Ord, PartialEq, PartialOrd)]
 struct Date {
     year: u16,
     month: u8,
     day: u8,
+}
+
+impl fmt::Display for Date {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            formatter,
+            "{:04}-{:02}-{:02}",
+            self.year, self.month, self.day
+        )
+    }
 }
 
 impl<'de> serde::de::Deserialize<'de> for Date {
