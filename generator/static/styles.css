@@ -1,19 +1,66 @@
 :root {
     --background: #f3eee4;
     --foreground: #171512;
+    --header-border: #c9bda8;
+    --column-width: 80ch;
 
     color: var(--foreground);
     background-color: var(--background);
+    font-family: "Literata", Georgia, serif;
+    font-size: 1.125rem;
+    font-optical-sizing: auto;
+    line-height: 1.6;
 }
 
 body {
     margin: 0;
 }
 
+.site-header {
+    box-sizing: border-box;
+    max-width: var(--column-width);
+    margin-inline: auto;
+    padding-inline: 1rem;
+}
+
+.site-nav {
+    display: flex;
+    align-items: baseline;
+    gap: 2rem;
+    padding-block: 0.75rem;
+    border-bottom: 1px solid var(--header-border);
+    white-space: nowrap;
+}
+
+.site-nav a {
+    color: inherit;
+}
+
+.site-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.site-nav ul {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
 main,
 article {
     box-sizing: border-box;
-    max-width: 80em;
+    max-width: var(--column-width);
     margin-inline: auto;
-    padding-inline: 1rem;
+    padding: 2rem 1rem;
+}
+
+pre {
+    box-sizing: border-box;
+    max-width: 100%;
+    overflow-x: auto;
 }
