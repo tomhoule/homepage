@@ -1,6 +1,6 @@
 baseURL = "https://www.tomhoule.com/"
 languageCode = "en-us"
-title = "Tom Houle's homepage"
+title = "Tom Houlé's homepage"
 
 [permalinks]
 blog = "/:slug/"

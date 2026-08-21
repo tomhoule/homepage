@@ -43,7 +43,23 @@ fn generate() -> Result {
     }
 
     generate_index_html(&metadata)?;
+    generate_about_html()?;
     fs::write("public/styles.css", STYLESHEET).context("Writing stylesheet")?;
+
+    Ok(())
+}
+
+fn generate_about_html() -> Result {
+    #[derive(askama::Template)]
+    #[template(path = "about.html")]
+    struct AboutTemplate;
+
+    let mut target =
+        std::fs::File::create("public/about.html").context("Opening about target file")?;
+
+    AboutTemplate
+        .write_into(&mut target)
+        .context("Rendering about template")?;
 
     Ok(())
 }
