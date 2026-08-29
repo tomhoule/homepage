@@ -4,6 +4,7 @@ use std::{
     backtrace::Backtrace, cmp::Reverse, ffi::OsStr, fmt, fs, io::Read, path::Path, range::Range,
 };
 
+const BACKGROUND_SCRIPT: &str = include_str!("../static/background.js");
 const BLOG_DIR_PATH: &str = "./content/blog";
 const STYLESHEET: &str = include_str!("../static/styles.css");
 
@@ -50,6 +51,7 @@ fn generate() -> Result {
 
     generate_index_html(&metadata)?;
     generate_about_html()?;
+    fs::write("public/background.js", BACKGROUND_SCRIPT).context("Writing background script")?;
     fs::write("public/styles.css", STYLESHEET).context("Writing stylesheet")?;
 
     Ok(())
