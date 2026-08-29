@@ -10,4 +10,4 @@
 
 I joined Glen on Netstack.fm to chat about the state of GraphQL. We touched on its evolution and dug into technical topics like the N+1 problem, persisted queries, and the the trend of Rust federation gateways.
 
-You can listen to the episode #link("https://netstack.fm/#episode-21")[on the podcast's website].
+You can listen to the episode #link("https://netstack.fm/episodes/graphql-and-rust-with-tom-houl")[on the podcast's website].

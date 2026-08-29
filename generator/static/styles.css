@@ -4,8 +4,9 @@
     --font-body: "Source Serif 4", Georgia, serif;
     --font-ui: "Source Sans 3", Arial, sans-serif;
     --column-width: 88ch;
-    --page-edge-light: #dce8c8;
-    --page-edge-dark: #586a40;
+    --page-edge-light: #e4e7d4;
+    --page-edge-dark: #c2c0ab;
+    --column-background: #fbfaf5;
     --page-margin: clamp(1rem, 5vw, 5rem);
 
     color: var(--foreground);
@@ -17,12 +18,13 @@
 }
 
 body {
+    position: relative;
     min-height: 100vh;
     margin: 0;
     background: linear-gradient(
         105deg,
         var(--page-edge-light) 0%,
-        #acbd8d 52%,
+        #d6d5c0 52%,
         var(--page-edge-dark) 100%
     );
 }
@@ -83,7 +85,18 @@ a:focus-visible {
     border-radius: 0.1em;
 }
 
+.background-ornament {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    display: block;
+    width: 100%;
+    pointer-events: none;
+}
+
 .content-column {
+    position: relative;
+    z-index: 1;
     box-sizing: border-box;
     width: min(
         calc(100% - (2 * var(--page-margin))),
@@ -91,7 +104,7 @@ a:focus-visible {
     );
     min-height: 100vh;
     margin-inline-start: var(--page-margin);
-    background-color: rgb(255 255 255 / 72%);
+    background-color: var(--column-background);
 }
 
 .flex {
@@ -126,8 +139,7 @@ a:focus-visible {
     font-family: var(--font-ui);
     align-items: baseline;
     gap: 2rem;
-    padding-block: 0.75rem;
-    border-bottom: 1px solid var(--header-border);
+    padding-block: 1.5rem 0;
     white-space: nowrap;
 }
 
@@ -160,7 +172,8 @@ article {
     box-sizing: border-box;
     max-width: var(--column-width);
     margin-inline: auto;
-    padding: 2rem 1rem;
+    padding-block: 3.75rem 2rem;
+    padding-inline: 1rem;
 }
 
 
@@ -183,9 +196,11 @@ article {
 }
 
 .post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
     margin: 0;
     padding: 0;
-    border-top: 1px solid var(--header-border);
     list-style: none;
 }
 
@@ -194,8 +209,6 @@ article {
     grid-template-columns: 7rem minmax(0, 1fr);
     gap: 1.5rem;
     align-items: baseline;
-    padding-block: 1rem;
-    border-bottom: 1px solid var(--header-border);
 }
 
 .post-list time {
@@ -229,10 +242,13 @@ code:not(pre code) {
 }
 
 @media (max-width: 64rem) {
+    .background-ornament {
+        display: none;
+    }
+
     .content-column {
         width: 100%;
         margin-inline: 0;
-        background-color: #f3f1e9;
     }
 
     .site-header,
