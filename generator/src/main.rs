@@ -39,7 +39,13 @@ fn generate() -> Result {
 
         extract_metadata(&html_file_path, &mut metadata, &mut html_content)?;
 
-        generate_blog_post_html(&metadata, metadata.blog.last().unwrap(), &html_content)?;
+        let blog_metadata = metadata.blog.last().unwrap();
+
+        if blog_metadata.draft {
+            continue;
+        }
+
+        generate_blog_post_html(&metadata, &blog_metadata, &html_content)?;
     }
 
     generate_index_html(&metadata)?;
@@ -112,6 +118,7 @@ fn generate_blog_post_html(
     #[template(path = "post.html")]
     struct PostTemplate<'a> {
         title: &'a str,
+        date: Date,
         content: &'a str,
     }
 
@@ -124,6 +131,7 @@ fn generate_blog_post_html(
 
     PostTemplate {
         title: &metadata[blog_metadata.title],
+        date: blog_metadata.date,
         content: html_content,
     }
     .write_into(&mut target)

@@ -6,17 +6,18 @@
     <title>{{ title }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&amp;display=swap">
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <div class="content-column">
     {% include "header.html" %}
-    <article>
-        <h1>{{ title }}</h1>
-        <p>
-            {{ content | safe }}
-        </p>
+    <article class="blog-post">
+        <header class="post-header">
+            <p class="post-meta"><time datetime="{{ date }}">{{ date }}</time></p>
+            <h1>{{ title }}</h1>
+        </header>
+        {{ content | safe }}
     </article>
     </div>
 </body>
