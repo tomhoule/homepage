@@ -1,11 +1,13 @@
 :root {
-    --background: #f3eee4;
     --foreground: #171512;
     --header-border: #c9bda8;
     --column-width: 88ch;
+    --page-edge-light: #dce8c8;
+    --page-edge-dark: #586a40;
+    --page-margin: clamp(1rem, 5vw, 5rem);
 
     color: var(--foreground);
-    background-color: var(--background);
+    background-color: var(--page-edge-dark);
     font-family: "Source Sans 3", Arial, sans-serif;
     font-size: 1.125rem;
     font-optical-sizing: auto;
@@ -13,7 +15,14 @@
 }
 
 body {
+    min-height: 100vh;
     margin: 0;
+    background: linear-gradient(
+        105deg,
+        var(--page-edge-light) 0%,
+        #acbd8d 52%,
+        var(--page-edge-dark) 100%
+    );
 }
 
 h1 {
@@ -21,24 +30,40 @@ h1 {
     font-size: 1.5rem;
 }
 
-.background-canvas {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
+a {
+    color: #36552d;
+    text-decoration-color: #829b70;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.16em;
+    text-decoration-skip-ink: auto;
+}
+
+a:visited {
+    color: #624c66;
+    text-decoration-color: #9b849d;
+}
+
+a:hover {
+    color: #243e1f;
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 0.12em;
+}
+
+a:focus-visible {
+    outline: 3px solid #36552d;
+    outline-offset: 3px;
+    border-radius: 0.1em;
 }
 
 .content-column {
-    position: relative;
-    z-index: 1;
     box-sizing: border-box;
-    width: 100%;
-    max-width: calc(var(--column-width) + 2rem);
+    width: min(
+        calc(100% - (2 * var(--page-margin))),
+        calc(var(--column-width) + 2rem)
+    );
     min-height: 100vh;
-    margin-inline: auto;
-    background-color: rgb(255 255 255 / 60%);
+    margin-inline-start: var(--page-margin);
+    background-color: rgb(255 255 255 / 72%);
 }
 
 .flex {
@@ -79,6 +104,11 @@ h1 {
 
 .site-nav a {
     color: inherit;
+    text-decoration-color: #829b70;
+}
+
+.site-nav a:hover {
+    text-decoration-color: currentColor;
 }
 
 .site-title {
@@ -117,4 +147,19 @@ code:not(pre code) {
     color: #573811;
     background-color: #fff4bf;
     box-decoration-break: clone;
+}
+
+@media (max-width: 64rem) {
+    .content-column {
+        width: 100%;
+        margin-inline: 0;
+        background-color: #f3f1e9;
+    }
+
+    .site-header,
+    main,
+    article {
+        max-width: none;
+        margin-inline: 0;
+    }
 }

@@ -5,7 +5,6 @@ use std::{
 };
 
 const BLOG_DIR_PATH: &str = "./content/blog";
-const BACKGROUND_SCRIPT: &str = include_str!("../static/background.js");
 const STYLESHEET: &str = include_str!("../static/styles.css");
 
 fn main() {
@@ -45,7 +44,6 @@ fn generate() -> Result {
 
     generate_index_html(&metadata)?;
     generate_about_html()?;
-    fs::write("public/background.js", BACKGROUND_SCRIPT).context("Writing background script")?;
     fs::write("public/styles.css", STYLESHEET).context("Writing stylesheet")?;
 
     Ok(())
