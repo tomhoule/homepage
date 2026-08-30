@@ -177,12 +177,6 @@ article {
 }
 
 
-.post-header {
-    margin-block-end: 2.75rem;
-    padding-block-end: 1.5rem;
-    border-bottom: 1px solid var(--header-border);
-}
-
 .post-meta,
 .section-kicker {
     margin-block: 0 0.45rem;
@@ -193,6 +187,31 @@ article {
     letter-spacing: 0.12em;
     line-height: 1.2;
     text-transform: uppercase;
+}
+
+.about-table {
+    width: 100%;
+    margin-block: -1.25rem 3.5rem;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.about-table td {
+    padding-block: 0.3rem;
+    vertical-align: baseline;
+}
+
+.about-table tr:first-child td {
+    padding-block-start: 1rem;
+}
+
+.about-table tr:last-child td {
+    padding-block-end: 1rem;
+}
+
+.about-table td:first-child {
+    box-sizing: border-box;
+    width: 7rem;
 }
 
 .post-list {
