@@ -136,7 +136,6 @@ a:focus-visible {
 
 .site-nav {
     display: flex;
-    font-family: var(--font-ui);
     align-items: baseline;
     gap: 2rem;
     padding-block: 1.5rem 0;
@@ -153,8 +152,9 @@ a:focus-visible {
 }
 
 .site-title {
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-size: 1.45rem;
+    font-weight: 400;
+    letter-spacing: -0.015em;
     text-decoration: none;
 }
 
@@ -189,29 +189,27 @@ article {
     text-transform: uppercase;
 }
 
-.about-table {
-    width: 100%;
-    margin-block: -1.25rem 3.5rem;
-    border-collapse: collapse;
-    font-size: 0.95rem;
+.introduction {
+    max-width: 36rem;
+    margin-block: -1.25rem 0;
 }
 
-.about-table td {
-    padding-block: 0.3rem;
-    vertical-align: baseline;
+.introduction p {
+    margin-block: 0;
+    font-size: 1.05rem;
 }
 
-.about-table tr:first-child td {
-    padding-block-start: 1rem;
+.introduction .profile-links {
+    margin-block-start: 0.5rem;
 }
 
-.about-table tr:last-child td {
-    padding-block-end: 1rem;
-}
-
-.about-table td:first-child {
-    box-sizing: border-box;
-    width: 7rem;
+.index-heading {
+    margin-block: 3.5rem 1.5rem;
+    color: #58634f;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0.025em;
 }
 
 .post-list {
@@ -241,7 +239,7 @@ article {
 .post-list a {
     width: fit-content;
     font-size: 1.15rem;
-    font-weight: 600;
+    font-weight: 400;
     line-height: 1.3;
 }
 
