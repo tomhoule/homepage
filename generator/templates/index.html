@@ -17,41 +17,16 @@
         <div class="content-column">
             {% include "header.html" %}
             <main class="post-index">
-                <table class="about-table">
-                    <tbody>
-                        <tr>
-                            <td>Engineer at</td>
-                            <td>
-                                <a href="https://zed.dev/">Zed Industries</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>GitHub</td>
-                            <td>
-                                <a href="https://github.com/tomhoule"
-                                    >@tomhoule</a
-                                >
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Bluesky</td>
-                            <td>
-                                <a href="https://bsky.app/profile/tomhoule.com"
-                                    >tomhoule.com</a
-                                >
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>CV</td>
-                            <td>
-                                <a
-                                    href="https://github.com/tomhoule/cv/blob/main/cv_tom_houle.pdf"
-                                    >PDF</a
-                                >
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <section class="introduction" aria-label="About Tom Houlé">
+                    <p>
+</p>                        This is the homepage of a dog person who is also an engineer at
+                        <a href="https://zed.dev/">Zed Industries</a> and goes by Tom Houlé. Elsewhere:
+                        <a href="https://github.com/tomhoule">GitHub</a>,
+                        <a href="https://bsky.app/profile/tomhoule.com">Bluesky</a>.
+                        <a href="https://github.com/tomhoule/cv/blob/main/cv_tom_houle.pdf">CV</a>.
+                    </p>
+                </section>
+                <h2 class="index-heading">Writing</h2>
                 <ol class="post-list">
                     {% for post in posts %}
                     <li>
