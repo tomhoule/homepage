@@ -19,14 +19,13 @@
             <main class="post-index">
                 <section class="introduction" aria-label="About Tom Houlé">
                     <p>
-</p>                        This is the homepage of a dog person who is also an engineer at
+                        This is the homepage of a dog person who is also an engineer at
                         <a href="https://zed.dev/">Zed Industries</a> and goes by Tom Houlé. Elsewhere:
                         <a href="https://github.com/tomhoule">GitHub</a>,
                         <a href="https://bsky.app/profile/tomhoule.com">Bluesky</a>.
                         <a href="https://github.com/tomhoule/cv/blob/main/cv_tom_houle.pdf">CV</a>.
                     </p>
                 </section>
-                <h2 class="index-heading">Writing</h2>
                 <ol class="post-list">
                     {% for post in posts %}
                     <li>
@@ -36,6 +35,7 @@
                     {% endfor %}
                 </ol>
             </main>
+            {% include "footer.html" %}
         </div>
     </body>
 </html>
