@@ -97,6 +97,8 @@ a:focus-visible {
 .content-column {
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
     box-sizing: border-box;
     width: min(
         calc(100% - (2 * var(--page-margin))),
@@ -129,6 +131,7 @@ a:focus-visible {
 
 .site-header {
     box-sizing: border-box;
+    width: 100%;
     max-width: var(--column-width);
     margin-inline: auto;
     padding-inline: 1rem;
@@ -171,9 +174,11 @@ a:focus-visible {
 main,
 article {
     box-sizing: border-box;
+    width: 100%;
     max-width: var(--column-width);
+    flex: 1 0 auto;
     margin-inline: auto;
-    padding-block: 3.75rem 6rem;
+    padding-block: 3.75rem 2rem;
     padding-inline: 1rem;
 }
 
@@ -236,29 +241,70 @@ article {
 }
 
 .site-footer {
-    position: fixed;
-    z-index: 2;
-    bottom: 0;
-    left: var(--page-margin);
+    align-self: center;
     box-sizing: border-box;
-    width: min(
-        calc(100% - (2 * var(--page-margin))),
-        calc(var(--column-width) + 2rem)
-    );
-    padding: 1rem;
+    width: 100%;
+    max-width: var(--column-width);
+    margin-inline: auto;
+    padding: 3rem 1rem 1.5rem;
     color: #777168;
-    background-color: var(--column-background);
-    font-family: var(--font-ui);
-    font-size: 0.75rem;
+    text-align: left;
 }
 
 .site-footer p {
     margin: 0;
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
 }
 
 .site-footer a {
     color: inherit;
     text-decoration-color: var(--header-border);
+}
+
+sup[role="doc-noteref"] {
+    font-family: var(--font-ui);
+    font-size: 0.7em;
+    line-height: 0;
+}
+
+sup[role="doc-noteref"] a,
+sup[role="doc-backlink"] a {
+    color: #58634f;
+    text-decoration: none;
+}
+
+section[role="doc-endnotes"] {
+    margin-block-start: 3.5rem;
+    padding-block-start: 1.25rem;
+    border-block-start: 1px solid var(--header-border);
+    color: #5f5a52;
+    font-size: 0.88rem;
+    line-height: 1.45;
+}
+
+section[role="doc-endnotes"] ol {
+    margin: 0;
+    padding: 0;
+}
+
+section[role="doc-endnotes"] li {
+    position: relative;
+    padding-inline-start: 2rem;
+}
+
+section[role="doc-endnotes"] li + li {
+    margin-block-start: 0.75rem;
+}
+
+section[role="doc-endnotes"] sup[role="doc-backlink"] {
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0.15em;
+    width: 1.25rem;
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    text-align: end;
 }
 
 pre {
@@ -284,11 +330,6 @@ code:not(pre code) {
     .content-column {
         width: 100%;
         margin-inline: 0;
-    }
-
-    .site-footer {
-        left: 0;
-        width: 100%;
     }
 
     .site-header,
