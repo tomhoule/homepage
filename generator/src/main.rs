@@ -298,9 +298,13 @@ fn compile_typst(file_path: &Path) -> Result {
         .spawn()
         .map_err(ErrorReport::context("Spawning typst"))?;
 
-    child.wait().map_err(ErrorReport::context(
+    let exit_status = child.wait().map_err(ErrorReport::context(
         "Waiting for child typst process to exit",
     ))?;
+
+    if !exit_status.success() {
+        return Err(ErrorReport::new("Typst compilation failed"));
+    }
 
     Ok(())
 }
