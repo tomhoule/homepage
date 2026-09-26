@@ -1,7 +1,8 @@
 use askama::Template;
 use serde::de::DeserializeSeed;
 use std::{
-    backtrace::Backtrace, cmp::Reverse, ffi::OsStr, fmt, fs, io::Read, path::Path, range::Range,
+    backtrace::Backtrace, cmp::Reverse, collections::HashSet, ffi::OsStr, fmt, fs, io::Read,
+    path::Path, range::Range,
 };
 
 const BACKGROUND_SCRIPT: &str = include_str!("../static/background.js");
@@ -49,6 +50,7 @@ fn generate() -> Result {
         generate_blog_post_html(&metadata, &blog_metadata, &html_content)?;
     }
 
+    generate_aliases(&metadata)?;
     generate_index_html(&metadata)?;
 
     fs::write("public/background.js", BACKGROUND_SCRIPT).context("Writing background script")?;
@@ -123,6 +125,85 @@ fn generate_blog_post_html(
     .context("Rendering blog post template")?;
 
     Ok(())
+}
+
+fn generate_aliases(metadata: &MetadataCollection) -> Result {
+    #[derive(askama::Template)]
+    #[template(path = "alias.html")]
+    struct AliasTemplate<'a> {
+        canonical_url: &'a str,
+    }
+
+    let published = metadata.blog.iter().filter(|post| !post.draft);
+    let mut paths = HashSet::new();
+    paths.insert(String::new()); // The homepage is already generated.
+    for post in published.clone() {
+        let slug = &metadata[post.slug];
+        if !valid_page_path(slug) || !paths.insert(slug.to_owned()) {
+            return Err(ErrorReport::new("Invalid or duplicate blog post slug"));
+        }
+    }
+
+    let mut aliases = Vec::new();
+    for post in published {
+        let canonical_url = format!("https://www.tomhoule.com/{}/", &metadata[post.slug]);
+        for alias in &post.aliases {
+            let Some(path) = alias.strip_prefix('/').and_then(|s| s.strip_suffix('/')) else {
+                return Err(ErrorReport::new("Alias must be an absolute directory URL"));
+            };
+            if !valid_page_path(path) || !paths.insert(path.to_owned()) {
+                return Err(ErrorReport::new("Invalid or duplicate blog post alias"));
+            }
+            aliases.push((path.to_owned(), canonical_url.clone()));
+        }
+    }
+    for (path, canonical_url) in aliases {
+        let directory = Path::new("public").join(path);
+        fs::create_dir_all(&directory).context("Creating blog post alias directory")?;
+        let mut target = fs::File::create(directory.join("index.html"))
+            .context("Opening blog post alias target file")?;
+        AliasTemplate {
+            canonical_url: &canonical_url,
+        }
+        .write_into(&mut target)
+        .context("Rendering blog post alias")?;
+    }
+    Ok(())
+}
+
+fn valid_page_path(path: &str) -> bool {
+    !path.is_empty()
+        && path.split('/').all(|part| {
+            !part.is_empty()
+                && part != "."
+                && part != ".."
+                && part
+                    .bytes()
+                    .all(|b| b.is_ascii_alphanumeric() || b == b'-' || b == b'_')
+        })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::valid_page_path;
+
+    #[test]
+    fn only_safe_directory_paths_are_accepted() {
+        assert!(valid_page_path("2018/graphql-client-talk"));
+        assert!(valid_page_path("graphql-client-talk"));
+        for path in [
+            "",
+            "/absolute",
+            "trailing/",
+            "a//b",
+            ".",
+            "../outside",
+            "a/../b",
+            "a.html",
+        ] {
+            assert!(!valid_page_path(path), "{path}");
+        }
+    }
 }
 
 fn extract_metadata(
@@ -343,6 +424,7 @@ impl<'de> DeserializeSeed<'de> for DeserializeMetadata<'_> {
                 let mut date = None;
                 let mut slug = None;
                 let mut draft = None;
+                let mut aliases = None;
 
                 while let Some(key) = map.next_key::<&str>()? {
                     match key {
@@ -350,6 +432,7 @@ impl<'de> DeserializeSeed<'de> for DeserializeMetadata<'_> {
                         "date" => date = Some(map.next_value()?),
                         "slug" => slug = Some(map.next_value_seed(StringVisitor(self.0))?),
                         "draft" => draft = Some(map.next_value()?),
+                        "aliases" => aliases = Some(map.next_value()?),
                         _ => {
                             // Ignore unknown fields
                             map.next_value::<serde_json::Value>()?;
@@ -367,6 +450,7 @@ impl<'de> DeserializeSeed<'de> for DeserializeMetadata<'_> {
                     date,
                     slug,
                     draft,
+                    aliases: aliases.unwrap_or_default(),
                 })
             }
 
@@ -440,6 +524,7 @@ struct BlogMetadata {
     date: Date,
     slug: StringId,
     draft: bool,
+    aliases: Vec<String>,
 }
 
 #[derive(Clone, Copy, Eq, Ord, PartialEq, PartialOrd)]
