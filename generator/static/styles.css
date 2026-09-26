@@ -139,7 +139,7 @@ a:focus-visible {
 
 .site-nav {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: baseline;
     gap: 2rem;
     padding-block: 1.5rem 0;
@@ -156,9 +156,10 @@ a:focus-visible {
 }
 
 .site-title {
-    font-size: 1.45rem;
+    font-size: 1.1rem;
+    font-variant: small-caps;
     font-weight: 400;
-    letter-spacing: -0.015em;
+    letter-spacing: 0.025em;
     text-decoration: none;
 }
 
