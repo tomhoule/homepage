@@ -30,7 +30,7 @@
                     {% for post in posts %}
                     <li>
                         <time datetime="{{ post.date }}">{{ post.date }}</time>
-                        <a href="/{{ post.slug }}.html">{{ post.title }}</a>
+                        <a href="/{{ post.slug }}/">{{ post.title }}</a>
                     </li>
                     {% endfor %}
                 </ol>

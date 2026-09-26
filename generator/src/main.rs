@@ -109,12 +109,10 @@ fn generate_blog_post_html(
         content: &'a str,
     }
 
-    let mut target = {
-        let mut target_path = std::path::Path::new("public").join(&metadata[blog_metadata.slug]);
-        target_path.set_extension("html");
-
-        std::fs::File::create(target_path).context("Opening HTML blog post target file")?
-    };
+    let target_path = std::path::Path::new("public").join(&metadata[blog_metadata.slug]);
+    std::fs::create_dir_all(&target_path).context("Creating blog post directory")?;
+    let mut target = std::fs::File::create(target_path.join("index.html"))
+        .context("Opening HTML blog post target file")?;
 
     PostTemplate {
         title: &metadata[blog_metadata.title],
