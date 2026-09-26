@@ -52,6 +52,7 @@ fn generate() -> Result {
 
     generate_aliases(&metadata)?;
     generate_index_html(&metadata)?;
+    generate_sitemap(&metadata)?;
 
     fs::write("public/background.js", BACKGROUND_SCRIPT).context("Writing background script")?;
     fs::write("public/styles.css", STYLESHEET).context("Writing stylesheet")?;
@@ -94,6 +95,29 @@ fn generate_index_html(metadata: &MetadataCollection) -> Result {
     IndexTemplate { posts }
         .write_into(&mut target)
         .context("Rendering index template")?;
+
+    Ok(())
+}
+
+fn generate_sitemap(metadata: &MetadataCollection) -> Result {
+    #[derive(askama::Template)]
+    #[template(path = "sitemap.xml")]
+    struct SitemapTemplate<'a> {
+        posts: Vec<&'a str>,
+    }
+
+    let mut posts: Vec<&str> = metadata
+        .blog
+        .iter()
+        .filter(|post| !post.draft)
+        .map(|post| &metadata[post.slug])
+        .collect();
+    posts.sort_unstable();
+    let mut target =
+        fs::File::create("public/sitemap.xml").context("Opening sitemap target file")?;
+    SitemapTemplate { posts }
+        .write_into(&mut target)
+        .context("Rendering sitemap")?;
 
     Ok(())
 }
