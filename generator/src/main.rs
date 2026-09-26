@@ -21,6 +21,7 @@ fn generate() -> Result {
 
     let mut metadata = MetadataCollection::default();
     let mut html_content = String::with_capacity(1024);
+    let mut rss_posts = Vec::new();
 
     for entry in blog {
         let entry = entry.map_err(ErrorReport::context("Reading blog entry"))?;
@@ -48,11 +49,19 @@ fn generate() -> Result {
         }
 
         generate_blog_post_html(&metadata, &blog_metadata, &html_content)?;
+        rss_posts.push(RssPost {
+            title: metadata[blog_metadata.title].to_owned(),
+            slug: metadata[blog_metadata.slug].to_owned(),
+            pub_date: blog_metadata.date.rss_date(),
+            content: html_content.clone(),
+            date: blog_metadata.date,
+        });
     }
 
     generate_aliases(&metadata)?;
     generate_index_html(&metadata)?;
     generate_sitemap(&metadata)?;
+    generate_rss(&mut rss_posts)?;
 
     fs::write("public/background.js", BACKGROUND_SCRIPT).context("Writing background script")?;
     fs::write("public/styles.css", STYLESHEET).context("Writing stylesheet")?;
@@ -119,6 +128,57 @@ fn generate_sitemap(metadata: &MetadataCollection) -> Result {
         .write_into(&mut target)
         .context("Rendering sitemap")?;
 
+    Ok(())
+}
+
+struct RssPost {
+    title: String,
+    slug: String,
+    pub_date: String,
+    content: String,
+    date: Date,
+}
+
+fn generate_rss(posts: &mut [RssPost]) -> Result {
+    #[derive(askama::Template)]
+    #[template(path = "rss.xml")]
+    struct RssTemplate<'a> {
+        posts: &'a [RssPost],
+        feed_url: &'a str,
+        channel_url: &'a str,
+        channel_title: &'a str,
+        last_build_date: Option<&'a str>,
+    }
+
+    posts.sort_unstable_by(|a, b| b.date.cmp(&a.date).then_with(|| a.slug.cmp(&b.slug)));
+    let last_build_date = posts.first().map(|post| post.pub_date.as_str());
+
+    fs::create_dir_all("public/blog").context("Creating blog feed directory")?;
+    for (path, feed_url, channel_url, channel_title) in [
+        (
+            "public/index.xml",
+            "https://www.tomhoule.com/index.xml",
+            "https://www.tomhoule.com/",
+            "Tom Houlé's homepage",
+        ),
+        (
+            "public/blog/index.xml",
+            "https://www.tomhoule.com/blog/index.xml",
+            "https://www.tomhoule.com/",
+            "Latest posts on Tom Houlé's homepage",
+        ),
+    ] {
+        let mut target = fs::File::create(path).context("Opening RSS target file")?;
+        RssTemplate {
+            posts,
+            feed_url,
+            channel_url,
+            channel_title,
+            last_build_date,
+        }
+        .write_into(&mut target)
+        .context("Rendering RSS feed")?;
+    }
     Ok(())
 }
 
@@ -209,7 +269,7 @@ fn valid_page_path(path: &str) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use super::valid_page_path;
+    use super::{Date, valid_page_path};
 
     #[test]
     fn only_safe_directory_paths_are_accepted() {
@@ -227,6 +287,28 @@ mod tests {
         ] {
             assert!(!valid_page_path(path), "{path}");
         }
+    }
+
+    #[test]
+    fn rss_dates_have_rfc_822_weekdays() {
+        assert_eq!(
+            Date {
+                year: 2026,
+                month: 1,
+                day: 6
+            }
+            .rss_date(),
+            "Tue, 06 Jan 2026 00:00:00 +0000"
+        );
+        assert_eq!(
+            Date {
+                year: 2024,
+                month: 2,
+                day: 29
+            }
+            .rss_date(),
+            "Thu, 29 Feb 2024 00:00:00 +0000"
+        );
     }
 }
 
@@ -564,6 +646,33 @@ impl fmt::Display for Date {
             formatter,
             "{:04}-{:02}-{:02}",
             self.year, self.month, self.day
+        )
+    }
+}
+
+impl Date {
+    fn rss_date(self) -> String {
+        // Gregorian weekday (Sunday = 0).
+        const MONTH_OFFSETS: [i32; 12] = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
+        const WEEKDAYS: [&str; 7] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const MONTHS: [&str; 12] = [
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+        ];
+        let mut year = i32::from(self.year);
+        if self.month < 3 {
+            year -= 1;
+        }
+        let weekday = (year + year / 4 - year / 100
+            + year / 400
+            + MONTH_OFFSETS[usize::from(self.month - 1)]
+            + i32::from(self.day))
+        .rem_euclid(7) as usize;
+        format!(
+            "{}, {:02} {} {:04} 00:00:00 +0000",
+            WEEKDAYS[weekday],
+            self.day,
+            MONTHS[usize::from(self.month - 1)],
+            self.year
         )
     }
 }
