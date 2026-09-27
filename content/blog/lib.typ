@@ -42,7 +42,7 @@
       referrerpolicy: "strict-origin-when-cross-origin",
       src: "https://www.youtube.com/embed/"
         + id
-        + "?autoplay=0&amp;controls=1&amp;end=0&amp;loop=0&amp;mute=0&amp;start=0",
+        + "?autoplay=0&controls=1&end=0&loop=0&mute=0&start=0",
       style: "position:absolute;top:0;left:0;width:100%;height:100%;border:0",
       title: "YouTube video",
     ),
