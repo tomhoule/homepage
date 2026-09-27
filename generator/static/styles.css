@@ -1,8 +1,9 @@
 :root {
     --foreground: #171512;
     --header-border: #c9bda8;
-    --font-body: "Source Serif 4", Georgia, serif;
-    --font-ui: "Source Sans 3", Arial, sans-serif;
+    --font-body: "Literata", Georgia, serif;
+    --font-ui: "Inter Variable", sans-serif;
+    /*--font-ui: "Inter Variable", Arial, sans-serif;*/
     --column-width: 88ch;
     --page-edge-light: #e4e7d4;
     --page-edge-dark: #c2c0ab;
@@ -32,6 +33,7 @@ body {
 h1,
 h2,
 h3 {
+    font-family: var(--font-ui);
     line-height: 1.15;
     text-wrap: balance;
 }
@@ -39,8 +41,9 @@ h3 {
 h1 {
     margin-block: 0;
     font-size: clamp(2rem, 4vw, 2.75rem);
-    font-weight: 600;
+    font-weight: 520;
     letter-spacing: -0.025em;
+    margin-bottom: 2rem;
 }
 
 h2 {
@@ -139,7 +142,7 @@ a:focus-visible {
 
 .site-nav {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: baseline;
     gap: 2rem;
     padding-block: 1.5rem 0;
@@ -156,16 +159,22 @@ a:focus-visible {
 }
 
 .site-title {
-    font-size: 1.1rem;
-    font-variant: small-caps;
+    font-family: var(--font-ui);
+    font-size: 1.6rem;
+    font-style: italic;
     font-weight: 400;
     letter-spacing: 0.025em;
     text-decoration: none;
 }
 
+.site-title-large {
+    font-size: 2.6rem;
+    font-weight: 560;
+}
+
 .site-nav ul {
     display: flex;
-    align-items: baseline;
+    align-items: baseline;thi
     gap: 1.25rem;
     margin: 0;
     padding: 0;
@@ -197,7 +206,6 @@ article {
 }
 
 .introduction {
-    max-width: 38rem;
     margin-block: -1rem 0;
 }
 
