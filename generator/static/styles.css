@@ -193,7 +193,10 @@ article {
 }
 
 
-.post-meta,
+.post-meta {
+    margin-block: 0 0.45rem;
+}
+
 .section-kicker {
     margin-block: 0 0.45rem;
     font-family: var(--font-ui);
@@ -234,6 +237,7 @@ article {
     align-items: baseline;
 }
 
+.post-meta time,
 .post-list time {
     color: #646057;
     font-family: var(--font-ui);
