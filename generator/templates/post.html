@@ -1,9 +1,11 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ title }}</title>
+    <meta name="description" content="{{ title }}">
+    <link rel="canonical" href="https://www.tomhoule.com/{{ slug }}/">
     {% include "favicon.html" %}
     <link rel="alternate" type="application/rss+xml" title="Tom Houlé's homepage" href="/index.xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,10 +14,11 @@
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
+    <a class="skip-link" href="#main">Skip to content</a>
     {% include "background.html" %}
     <div class="content-column">
     {% include "header.html" %}
-    <article class="blog-post">
+    <article class="blog-post" id="main" role="main">
         <header class="post-header">
             <p class="post-meta"><time datetime="{{ date }}">{{ date }}</time></p>
             <h1>{{ title }}</h1>
