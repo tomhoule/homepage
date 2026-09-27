@@ -2,7 +2,7 @@ use askama::Template;
 use serde::de::DeserializeSeed;
 use std::{
     backtrace::Backtrace, cmp::Reverse, collections::HashSet, ffi::OsStr, fmt, fs, io::Read,
-    path::Path, range::Range,
+    path::Path,
 };
 
 const BACKGROUND_SCRIPT: &str = include_str!("../static/background.js");
@@ -10,13 +10,16 @@ const BLOG_DIR_PATH: &str = "./content/blog";
 const STYLESHEET: &str = include_str!("../static/styles.css");
 
 fn main() {
-    if let Err(err) = generate() {
+    let output = std::env::args_os()
+        .nth(1)
+        .unwrap_or_else(|| "public".into());
+    if let Err(err) = generate(Path::new(&output)) {
         eprintln!("{err}");
         std::process::exit(1);
     }
 }
 
-fn generate() -> Result {
+fn generate(output: &Path) -> Result {
     let blog = fs::read_dir(BLOG_DIR_PATH).map_err(ErrorReport::context("Reading blog dir"))?;
 
     let mut metadata = MetadataCollection::default();
@@ -48,7 +51,6 @@ fn generate() -> Result {
             continue;
         }
 
-        generate_blog_post_html(&metadata, &blog_metadata, &html_content)?;
         rss_posts.push(RssPost {
             title: metadata[blog_metadata.title].to_owned(),
             slug: metadata[blog_metadata.slug].to_owned(),
@@ -58,18 +60,47 @@ fn generate() -> Result {
         });
     }
 
-    generate_aliases(&metadata)?;
-    generate_index_html(&metadata)?;
-    generate_sitemap(&metadata)?;
-    generate_rss(&mut rss_posts)?;
+    validate_paths(&metadata)?;
+    fs::create_dir_all(output).context("Creating output directory")?;
+    copy_static(Path::new("static"), output)?;
+    for (post, content) in metadata
+        .blog
+        .iter()
+        .filter(|post| !post.draft)
+        .zip(&rss_posts)
+    {
+        generate_blog_post_html(output, &metadata, post, &content.content)?;
+    }
+    generate_aliases(output, &metadata)?;
+    generate_index_html(output, &metadata)?;
+    generate_sitemap(output, &metadata)?;
+    generate_rss(output, &mut rss_posts)?;
 
-    fs::write("public/background.js", BACKGROUND_SCRIPT).context("Writing background script")?;
-    fs::write("public/styles.css", STYLESHEET).context("Writing stylesheet")?;
+    fs::write(output.join("background.js"), BACKGROUND_SCRIPT)
+        .context("Writing background script")?;
+    fs::write(output.join("styles.css"), STYLESHEET).context("Writing stylesheet")?;
 
     Ok(())
 }
 
-fn generate_index_html(metadata: &MetadataCollection) -> Result {
+fn copy_static(source: &Path, destination: &Path) -> Result {
+    for entry in fs::read_dir(source).context("Reading static directory")? {
+        let entry = entry.context("Reading static entry")?;
+        let file_type = entry.file_type().context("Reading static entry type")?;
+        let target = destination.join(entry.file_name());
+        if file_type.is_dir() {
+            fs::create_dir_all(&target).context("Creating static directory")?;
+            copy_static(&entry.path(), &target)?;
+        } else if file_type.is_file() {
+            fs::copy(entry.path(), target).context("Copying static asset")?;
+        } else {
+            return Err(ErrorReport::new("Unsupported static asset type"));
+        }
+    }
+    Ok(())
+}
+
+fn generate_index_html(output: &Path, metadata: &MetadataCollection) -> Result {
     #[derive(askama::Template)]
     #[template(path = "index.html")]
     struct IndexTemplate<'a> {
@@ -99,7 +130,7 @@ fn generate_index_html(metadata: &MetadataCollection) -> Result {
         .collect();
 
     let mut target =
-        std::fs::File::create("public/index.html").context("Opening index target file")?;
+        std::fs::File::create(output.join("index.html")).context("Opening index target file")?;
 
     IndexTemplate { posts }
         .write_into(&mut target)
@@ -108,7 +139,7 @@ fn generate_index_html(metadata: &MetadataCollection) -> Result {
     Ok(())
 }
 
-fn generate_sitemap(metadata: &MetadataCollection) -> Result {
+fn generate_sitemap(output: &Path, metadata: &MetadataCollection) -> Result {
     #[derive(askama::Template)]
     #[template(path = "sitemap.xml")]
     struct SitemapTemplate<'a> {
@@ -123,7 +154,7 @@ fn generate_sitemap(metadata: &MetadataCollection) -> Result {
         .collect();
     posts.sort_unstable();
     let mut target =
-        fs::File::create("public/sitemap.xml").context("Opening sitemap target file")?;
+        fs::File::create(output.join("sitemap.xml")).context("Opening sitemap target file")?;
     SitemapTemplate { posts }
         .write_into(&mut target)
         .context("Rendering sitemap")?;
@@ -139,7 +170,7 @@ struct RssPost {
     date: Date,
 }
 
-fn generate_rss(posts: &mut [RssPost]) -> Result {
+fn generate_rss(output: &Path, posts: &mut [RssPost]) -> Result {
     #[derive(askama::Template)]
     #[template(path = "rss.xml")]
     struct RssTemplate<'a> {
@@ -153,22 +184,22 @@ fn generate_rss(posts: &mut [RssPost]) -> Result {
     posts.sort_unstable_by(|a, b| b.date.cmp(&a.date).then_with(|| a.slug.cmp(&b.slug)));
     let last_build_date = posts.first().map(|post| post.pub_date.as_str());
 
-    fs::create_dir_all("public/blog").context("Creating blog feed directory")?;
+    fs::create_dir_all(output.join("blog")).context("Creating blog feed directory")?;
     for (path, feed_url, channel_url, channel_title) in [
         (
-            "public/index.xml",
+            "index.xml",
             "https://www.tomhoule.com/index.xml",
             "https://www.tomhoule.com/",
             "Tom Houlé's homepage",
         ),
         (
-            "public/blog/index.xml",
+            "blog/index.xml",
             "https://www.tomhoule.com/blog/index.xml",
             "https://www.tomhoule.com/",
             "Latest posts on Tom Houlé's homepage",
         ),
     ] {
-        let mut target = fs::File::create(path).context("Opening RSS target file")?;
+        let mut target = fs::File::create(output.join(path)).context("Opening RSS target file")?;
         RssTemplate {
             posts,
             feed_url,
@@ -183,6 +214,7 @@ fn generate_rss(posts: &mut [RssPost]) -> Result {
 }
 
 fn generate_blog_post_html(
+    output: &Path,
     metadata: &MetadataCollection,
     blog_metadata: &BlogMetadata,
     html_content: &str,
@@ -191,17 +223,19 @@ fn generate_blog_post_html(
     #[template(path = "post.html")]
     struct PostTemplate<'a> {
         title: &'a str,
+        slug: &'a str,
         date: Date,
         content: &'a str,
     }
 
-    let target_path = std::path::Path::new("public").join(&metadata[blog_metadata.slug]);
+    let target_path = output.join(&metadata[blog_metadata.slug]);
     std::fs::create_dir_all(&target_path).context("Creating blog post directory")?;
     let mut target = std::fs::File::create(target_path.join("index.html"))
         .context("Opening HTML blog post target file")?;
 
     PostTemplate {
         title: &metadata[blog_metadata.title],
+        slug: &metadata[blog_metadata.slug],
         date: blog_metadata.date,
         content: html_content,
     }
@@ -211,7 +245,7 @@ fn generate_blog_post_html(
     Ok(())
 }
 
-fn generate_aliases(metadata: &MetadataCollection) -> Result {
+fn generate_aliases(output: &Path, metadata: &MetadataCollection) -> Result {
     #[derive(askama::Template)]
     #[template(path = "alias.html")]
     struct AliasTemplate<'a> {
@@ -219,30 +253,17 @@ fn generate_aliases(metadata: &MetadataCollection) -> Result {
     }
 
     let published = metadata.blog.iter().filter(|post| !post.draft);
-    let mut paths = HashSet::new();
-    paths.insert(String::new()); // The homepage is already generated.
-    for post in published.clone() {
-        let slug = &metadata[post.slug];
-        if !valid_page_path(slug) || !paths.insert(slug.to_owned()) {
-            return Err(ErrorReport::new("Invalid or duplicate blog post slug"));
-        }
-    }
-
     let mut aliases = Vec::new();
     for post in published {
         let canonical_url = format!("https://www.tomhoule.com/{}/", &metadata[post.slug]);
         for alias in &post.aliases {
-            let Some(path) = alias.strip_prefix('/').and_then(|s| s.strip_suffix('/')) else {
-                return Err(ErrorReport::new("Alias must be an absolute directory URL"));
-            };
-            if !valid_page_path(path) || !paths.insert(path.to_owned()) {
-                return Err(ErrorReport::new("Invalid or duplicate blog post alias"));
-            }
+            let path = alias.trim_start_matches('/').trim_end_matches('/');
             aliases.push((path.to_owned(), canonical_url.clone()));
         }
     }
+    aliases.push(("blog".to_owned(), "https://www.tomhoule.com/".to_owned()));
     for (path, canonical_url) in aliases {
-        let directory = Path::new("public").join(path);
+        let directory = output.join(path);
         fs::create_dir_all(&directory).context("Creating blog post alias directory")?;
         let mut target = fs::File::create(directory.join("index.html"))
             .context("Opening blog post alias target file")?;
@@ -251,6 +272,31 @@ fn generate_aliases(metadata: &MetadataCollection) -> Result {
         }
         .write_into(&mut target)
         .context("Rendering blog post alias")?;
+    }
+    Ok(())
+}
+
+fn validate_paths(metadata: &MetadataCollection) -> Result {
+    let published = metadata.blog.iter().filter(|post| !post.draft);
+    let mut paths = HashSet::new();
+    paths.insert(String::new()); // The homepage is already generated.
+    paths.insert("blog".to_owned()); // The former blog index redirects to the homepage.
+    for post in published.clone() {
+        let slug = &metadata[post.slug];
+        if !valid_page_path(slug) || !paths.insert(slug.to_owned()) {
+            return Err(ErrorReport::new("Invalid or duplicate blog post slug"));
+        }
+    }
+
+    for post in published {
+        for alias in &post.aliases {
+            let Some(path) = alias.strip_prefix('/').and_then(|s| s.strip_suffix('/')) else {
+                return Err(ErrorReport::new("Alias must be an absolute directory URL"));
+            };
+            if !valid_page_path(path) || !paths.insert(path.to_owned()) {
+                return Err(ErrorReport::new("Invalid or duplicate blog post alias"));
+            }
+        }
     }
     Ok(())
 }
@@ -269,7 +315,7 @@ fn valid_page_path(path: &str) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use super::{Date, valid_page_path};
+    use super::{BlogMetadata, Date, MetadataCollection, valid_page_path, validate_paths};
 
     #[test]
     fn only_safe_directory_paths_are_accepted() {
@@ -287,6 +333,30 @@ mod tests {
         ] {
             assert!(!valid_page_path(path), "{path}");
         }
+    }
+
+    #[test]
+    fn published_paths_are_checked_before_writing_output() {
+        let mut metadata = MetadataCollection::default();
+        let title = metadata.insert_str("Post");
+        let slug = metadata.insert_str("../outside");
+        metadata.blog.push(BlogMetadata {
+            title,
+            date: Date {
+                year: 2026,
+                month: 1,
+                day: 1,
+            },
+            slug,
+            draft: false,
+            aliases: Vec::new(),
+        });
+        assert!(validate_paths(&metadata).is_err());
+
+        let safe_slug = metadata.insert_str("safe-post");
+        metadata.blog[0].slug = safe_slug;
+        metadata.blog[0].aliases.push("/safe-post/".to_owned());
+        assert!(validate_paths(&metadata).is_err());
     }
 
     #[test]
@@ -504,7 +574,7 @@ impl std::ops::Index<StringId> for MetadataCollection {
     type Output = str;
 
     fn index(&self, string_id: StringId) -> &Self::Output {
-        &self.strings_buf[string_id.0]
+        &self.strings_buf[string_id.start..string_id.end]
     }
 }
 
@@ -613,7 +683,10 @@ impl MetadataCollection {
     fn insert_str(&mut self, string: &str) -> StringId {
         let string_id = {
             let start = self.strings_buf.len();
-            StringId((start..start + string.len()).into())
+            StringId {
+                start,
+                end: start + string.len(),
+            }
         };
 
         self.strings_buf.push_str(string);
@@ -623,7 +696,10 @@ impl MetadataCollection {
 }
 
 #[derive(Clone, Debug, Copy)]
-struct StringId(Range<usize>);
+struct StringId {
+    start: usize,
+    end: usize,
+}
 
 struct BlogMetadata {
     title: StringId,

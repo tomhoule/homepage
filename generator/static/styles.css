@@ -88,6 +88,30 @@ a:focus-visible {
     border-radius: 0.1em;
 }
 
+.skip-link {
+    position: absolute;
+    z-index: 3;
+    top: 0.5rem;
+    left: 0.5rem;
+    transform: translateY(-200%);
+    background: var(--column-background);
+    padding: 0.5rem;
+}
+
+.skip-link:focus {
+    transform: none;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
 .background-ornament {
     position: absolute;
     z-index: 0;
@@ -174,7 +198,7 @@ a:focus-visible {
 
 .site-nav ul {
     display: flex;
-    align-items: baseline;thi
+    align-items: baseline;
     gap: 1.25rem;
     margin: 0;
     padding: 0;

@@ -1,18 +1,22 @@
 <!doctype html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Blog posts</title>
+        <meta name="description" content="Tom Houlé's homepage and blog posts" />
+        <link rel="canonical" href="https://www.tomhoule.com/" />
         {% include "favicon.html" %}
         <link rel="alternate" type="application/rss+xml" title="Tom Houlé's homepage" href="/index.xml" />
         <link rel="stylesheet" href="/styles.css" />
     </head>
     <body>
+        <a class="skip-link" href="#main">Skip to content</a>
         {% include "background.html" %}
         <div class="content-column">
             {% include "header.html" %}
-            <main class="post-index">
+            <main class="post-index" id="main">
+                <h1 class="visually-hidden">Blog posts</h1>
                 <section class="introduction" aria-label="About Tom Houlé">
                     <p>
                         This page is attributed to Tom Houlé, currently an engineer at
