@@ -10,21 +10,23 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
-        inherit (pkgs) hugo stdenv;
       in
       {
-        packages.default = stdenv.mkDerivation {
+        packages.default = pkgs.rustPlatform.buildRustPackage {
           pname = "tomhoule.com";
           version = "1.0.0";
-          buildInputs = [ hugo ];
+          cargoLock.lockFile = ./Cargo.lock;
+          nativeBuildInputs = [ pkgs.typst pkgs.python3 ];
+          cargoBuildFlags = [ "-p" "generator" ];
 
           # https://nix.dev/anti-patterns/language#reproducibility-referencing-top-level-directory-with
           src = builtins.path { path = ./.; name = "tomhoule.com"; };
 
-          buildPhase = "bash ${./builder.sh}";
-          installPhase = "echo 'Install phase: skipped'";
-
-          inherit system;
+          installPhase = ''
+            mkdir -p "$out"
+            target/${pkgs.stdenv.hostPlatform.config}/release/generator "$out"
+            python3 scripts/check_site.py "$out"
+          '';
         };
         packages.deploy-website = pkgs.writeShellApplication {
           name = "deploy-website";
@@ -50,7 +52,7 @@
         };
 
         devShells.default = pkgs.mkShell {
-          packages = [pkgs.zig];
+          packages = [ pkgs.cargo pkgs.rustc pkgs.typst pkgs.just pkgs.watchexec pkgs.python3 pkgs.zig ];
         };
       });
 }
