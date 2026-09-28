@@ -9,7 +9,7 @@
   aliases: ("/2022/2022-02-readings/",),
 )
 
-A bit more than a month and a half elapsed since #link("/2021/2021-12-readings/")[last
+A bit more than a month and a half elapsed since #link("/2021-12-readings/")[last
 post]. I haven't been very diligent in writing here,
 so there are a bunch of things I read and watched that didn't make it in this
 post.

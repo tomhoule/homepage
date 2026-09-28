@@ -13,9 +13,12 @@ class Links(HTMLParser):
         super().__init__()
         self.urls = []
         self.ids = set()
+        self.redirect = False
 
     def handle_starttag(self, tag, attrs):
         attributes = dict(attrs)
+        if tag == "meta" and attributes.get("http-equiv", "").lower() == "refresh":
+            self.redirect = True
         self.ids.update(
             value for name, value in attrs if name == "id" or (tag == "a" and name == "name")
         )
@@ -60,6 +63,8 @@ def check(root: Path):
                 errors.append(f"{page.relative_to(root)}: missing {url}")
                 continue
             document = target / "index.html" if target.is_dir() else target
+            if document in documents and documents[document].redirect:
+                errors.append(f"{page.relative_to(root)}: link points to redirect {url}")
             if parsed.fragment and document in documents:
                 fragment = unquote(parsed.fragment)
                 if fragment not in documents[document].ids:
