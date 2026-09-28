@@ -1,8 +1,8 @@
 use askama::Template;
 use serde::de::DeserializeSeed;
 use std::{
-    backtrace::Backtrace, cmp::Reverse, collections::HashSet, ffi::OsStr, fmt, fs, io::Read,
-    path::Path,
+    backtrace::Backtrace, cmp::Reverse, collections::HashSet, ffi::OsStr, fmt, fs, path::Path,
+    process::Stdio,
 };
 
 const BACKGROUND_SCRIPT: &str = include_str!("../static/background.js");
@@ -38,12 +38,8 @@ fn generate(output: &Path) -> Result {
             continue;
         }
 
-        compile_typst(&file_path)?;
-
-        let mut html_file_path = file_path;
-        html_file_path.set_extension("html");
-
-        extract_metadata(&html_file_path, &mut metadata, &mut html_content)?;
+        compile_typst(&file_path, &mut html_content)?;
+        extract_metadata(&mut metadata, &mut html_content)?;
 
         let blog_metadata = metadata.blog.last().unwrap();
 
@@ -382,18 +378,8 @@ mod tests {
     }
 }
 
-fn extract_metadata(
-    html_file_path: &Path,
-    metadata: &mut MetadataCollection,
-    content: &mut String,
-) -> Result<()> {
+fn extract_metadata(metadata: &mut MetadataCollection, content: &mut String) -> Result<()> {
     use html5gum::emitters::callback::{CallbackEmitter, CallbackEvent};
-
-    {
-        content.clear();
-        let mut file = std::fs::File::open(html_file_path).context("Opening HTML file path")?;
-        file.read_to_string(content).context("Reading HTML file")?;
-    }
 
     let mut body_start = None;
     let mut body_end = None;
@@ -543,23 +529,19 @@ where
     }
 }
 
-fn compile_typst(file_path: &Path) -> Result {
+fn compile_typst(file_path: &Path, html: &mut String) -> Result {
     let mut cmd = std::process::Command::new("typst");
 
     cmd.args(["compile", "--format=html", "--features=html"])
-        .arg(file_path);
+        .arg(file_path)
+        .arg("-")
+        .stderr(Stdio::inherit());
 
-    let mut child = cmd
-        .spawn()
-        .map_err(ErrorReport::context("Spawning typst"))?;
-
-    let exit_status = child.wait().map_err(ErrorReport::context(
-        "Waiting for child typst process to exit",
-    ))?;
-
-    if !exit_status.success() {
+    let output = cmd.output().context("Running typst")?;
+    if !output.status.success() {
         return Err(ErrorReport::new("Typst compilation failed"));
     }
+    *html = String::from_utf8(output.stdout).context("Decoding Typst HTML")?;
 
     Ok(())
 }

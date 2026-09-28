@@ -1,10 +1,6 @@
 /public
-/.vscode
 /result
 /themes
 .direnv
-.hugo_build.lock
 .env
-.pi
-.zig-cache/
 target/
