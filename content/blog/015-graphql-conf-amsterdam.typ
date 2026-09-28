@@ -13,19 +13,19 @@ I had a fantastic time at GraphQL Conf in Amsterdam last September. It's always 
 
 I had a busy conference schedule this year, presenting a deep-dive workshop and two lightning talks focused on pushing the boundaries of GraphQL federation. If you couldn't make it to Amsterdam, or just want a refresher, here is a quick look at what I presented.
 
-== The Federated GraphQL Subscriptions Zoo
+= The Federated GraphQL Subscriptions Zoo
 
 Subscriptions require a different mindset than queries and mutations, and federation adds infrastructure layers that complicate things further. In this lightning talk, I went into the challenges of scaling and, more specifically, translation across the "zoo" of available protocols—from mapping WebSocket init payloads to HTTP headers, to handling SSE and multipart streams. Subscriptions mediated by some persistence layer (a message queue, typically) emerged as the overall best choice, with only Grafbase allowing the amount of control you need to implement them properly. You can find the #link("/talks/federated-graphql-subscriptions-slides-2025.pdf")[slides here].
 
 #youtube("smqavgkzwlI")
 
-== Authorization in Federated GraphQL
+= Authorization in Federated GraphQL
 
 My second talk focused on leveraging the unique position of the federation gateway for authorization. Because the gateway sits early in the request lifecycle and sees the entire graph, it's a convenient place to make auth decisions. More than that, since subgraphs only see fragments of the original query, it's often the only component where you have the context you need to make a proper access control decision. I covered how to use out-of-the-box Federation directives like `@authenticated` and `@policy`, as well as implementing fine-grained authorization using WebAssembly extensions in the Grafbase gateway. You can find the #link("/talks/authorization-in-federated-graphql-slides-2025.pdf")[slides here].
 
 #youtube("hZQZrXk8dUE")
 
-== Workshop: Beyond GraphQL Federation
+= Workshop: Beyond GraphQL Federation
 
 I finished by co-hosting a workshop alongside Benjamin Rabier. Our goal was to demonstrate that federation is a fantastic pattern for combining APIs, and it shouldn't be limited to just GraphQL subgraphs.
 

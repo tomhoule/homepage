@@ -1,9 +1,20 @@
 :root {
     --foreground: #171512;
     --header-border: #c9bda8;
-    --font-body: "Literata", Georgia, serif;
-    --font-ui: "Inter Variable", sans-serif;
-    /*--font-ui: "Inter Variable", Arial, sans-serif;*/
+    --font-stack:
+          /* 1. Primary Favorites */
+          "IBM Plex Sans", "Source Sans 3", "Source Sans 3 Variable", "Noto Sans", "Noto Sans Variable", "Source Sans Pro",
+
+          /* 2. Stock Apple Fonts with Disambiguated / Distinct Characters */
+          "Avenir Next", "Avenir", "Optima",
+
+          /* 3. Common Pre-installed Fallbacks */
+          "Trebuchet MS", "Segoe UI", "Ubuntu", "Cantarell",
+
+          /* 4. Final Fallback */
+          sans-serif;
+    --font-body: var(--font-stack);
+    --font-ui: var(--font-stack);
     --column-width: 88ch;
     --page-edge-light: #e4e7d4;
     --page-edge-dark: #c2c0ab;
@@ -13,9 +24,15 @@
     color: var(--foreground);
     background-color: var(--page-edge-dark);
     font-family: var(--font-body);
-    font-size: 1.125rem;
+
+    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem); /* ~16px to 18px */
     font-optical-sizing: auto;
     line-height: 1.5;
+    letter-spacing: 0.01em;
+    text-rendering: optimizeLegibility;
+
+    font-feature-settings: "kern" 1, "liga" 1, "zero" 1;
+    font-variant-numeric: tabular-nums;
 }
 
 body {
@@ -40,8 +57,8 @@ h3 {
 
 h1 {
     margin-block: 0;
-    font-size: clamp(2rem, 4vw, 2.75rem);
-    font-weight: 520;
+    font-size: clamp(2rem, 4.4vw, 3rem);
+    font-weight: normal;
     letter-spacing: -0.025em;
     margin-bottom: 2rem;
 }
@@ -50,7 +67,7 @@ h2 {
     margin-block: 2.5rem 0.75rem;
     color: #2f4027;
     font-size: 1.55rem;
-    font-weight: 600;
+    font-weight: 500;
     letter-spacing: -0.01em;
 }
 
@@ -58,7 +75,7 @@ h3 {
     margin-block: 2rem 0.5rem;
     color: #46543b;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
@@ -184,7 +201,7 @@ a:focus-visible {
 
 .site-title {
     font-family: var(--font-ui);
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     font-style: italic;
     font-weight: 400;
     letter-spacing: 0.025em;
@@ -192,8 +209,7 @@ a:focus-visible {
 }
 
 .site-title-large {
-    font-size: 2.6rem;
-    font-weight: 560;
+    font-size: 2.2rem;
 }
 
 .site-nav ul {
