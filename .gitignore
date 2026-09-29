@@ -1,4 +1,6 @@
 /public
+/node_modules/
+/.cloudflare/
 /result
 /themes
 .direnv
