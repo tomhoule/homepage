@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>{{ channel_title }}</title>
-        <link>{{ channel_url }}</link>
+        <link>{{ crate::SITE_URL }}/</link>
         <description>Recent content on Tom Houlé's homepage</description>
         <language>en-us</language>
         {% if let Some(date) = last_build_date %}<lastBuildDate>{{ date }}</lastBuildDate>{% endif %}
@@ -10,9 +10,9 @@
         {% for post in posts %}
         <item>
             <title>{{ post.title }}</title>
-            <link>https://www.tomhoule.com/{{ post.slug }}/</link>
+            <link>{{ crate::SITE_URL }}/{{ post.slug }}/</link>
             <pubDate>{{ post.pub_date }}</pubDate>
-            <guid isPermaLink="true">https://www.tomhoule.com/{{ post.slug }}/</guid>
+            <guid isPermaLink="true">{{ crate::RSS_GUID_BASE }}/{{ post.slug }}/</guid>
             <description>{{ post.content }}</description>
         </item>
         {% endfor %}

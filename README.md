@@ -1,6 +1,6 @@
 # tomhoule.com
 
-The source for [tomhoule.com](https://www.tomhoule.com).
+The source for [tomhoule.com](https://tomhoule.com).
 
 ## Build and preview
 
@@ -11,7 +11,7 @@ The source for [tomhoule.com](https://www.tomhoule.com).
 ## Release
 
 GitHub Pages is hosted from `tomhoule/homepage`, with the custom domain
-`www.tomhoule.com`. Pushes and pull requests to `main` run build checks only.
+`tomhoule.com`. Pushes and pull requests to `main` run build checks only.
 There are no preview deployments or automatic production releases.
 
 After the desired changes are on GitHub's `main` branch, run `just deploy`

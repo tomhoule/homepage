@@ -8,6 +8,9 @@ use std::{
 const BACKGROUND_SCRIPT: &str = include_str!("../static/background.js");
 const BLOG_DIR_PATH: &str = "./content/blog";
 const STYLESHEET: &str = include_str!("../static/styles.css");
+const SITE_URL: &str = "https://tomhoule.com";
+// Feed item identifiers must remain stable when the canonical hostname changes.
+const RSS_GUID_BASE: &str = "https://www.tomhoule.com";
 
 fn main() {
     let output = std::env::args_os()
@@ -172,7 +175,6 @@ fn generate_rss(output: &Path, posts: &mut [RssPost]) -> Result {
     struct RssTemplate<'a> {
         posts: &'a [RssPost],
         feed_url: &'a str,
-        channel_url: &'a str,
         channel_title: &'a str,
         last_build_date: Option<&'a str>,
     }
@@ -181,25 +183,18 @@ fn generate_rss(output: &Path, posts: &mut [RssPost]) -> Result {
     let last_build_date = posts.first().map(|post| post.pub_date.as_str());
 
     fs::create_dir_all(output.join("blog")).context("Creating blog feed directory")?;
-    for (path, feed_url, channel_url, channel_title) in [
-        (
-            "index.xml",
-            "https://www.tomhoule.com/index.xml",
-            "https://www.tomhoule.com/",
-            "Tom Houlé's homepage",
-        ),
+    for (path, channel_title) in [
+        ("index.xml", "Tom Houlé's homepage"),
         (
             "blog/index.xml",
-            "https://www.tomhoule.com/blog/index.xml",
-            "https://www.tomhoule.com/",
             "Latest posts on Tom Houlé's homepage",
         ),
     ] {
+        let feed_url = format!("{SITE_URL}/{path}");
         let mut target = fs::File::create(output.join(path)).context("Opening RSS target file")?;
         RssTemplate {
             posts,
-            feed_url,
-            channel_url,
+            feed_url: &feed_url,
             channel_title,
             last_build_date,
         }
@@ -251,13 +246,13 @@ fn generate_aliases(output: &Path, metadata: &MetadataCollection) -> Result {
     let published = metadata.blog.iter().filter(|post| !post.draft);
     let mut aliases = Vec::new();
     for post in published {
-        let canonical_url = format!("https://www.tomhoule.com/{}/", &metadata[post.slug]);
+        let canonical_url = format!("{SITE_URL}/{}/", &metadata[post.slug]);
         for alias in &post.aliases {
             let path = alias.trim_start_matches('/').trim_end_matches('/');
             aliases.push((path.to_owned(), canonical_url.clone()));
         }
     }
-    aliases.push(("blog".to_owned(), "https://www.tomhoule.com/".to_owned()));
+    aliases.push(("blog".to_owned(), format!("{SITE_URL}/")));
     for (path, canonical_url) in aliases {
         let directory = output.join(path);
         fs::create_dir_all(&directory).context("Creating blog post alias directory")?;
