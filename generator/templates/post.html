@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
 {% block description %}{{ title }}{% endblock %}
-{% block canonical %}https://www.tomhoule.com/{{ slug }}/{% endblock %}
+{% block canonical %}{{ crate::SITE_URL }}/{{ slug }}/{% endblock %}
 {% block content %}
     <article class="blog-post" id="main" role="main">
         <header class="post-header">
